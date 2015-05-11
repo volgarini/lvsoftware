@@ -8,6 +8,7 @@ package codigos.suporte;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
 /**
@@ -28,9 +29,20 @@ public class Suporte {
     }
 
     public static long date_to_milisec(String pattern, String data) throws ParseException {
+        if (data.trim().isEmpty()) {
+            return 0;
+        }
         SimpleDateFormat format = new java.text.SimpleDateFormat(pattern);
         Date date = format.parse(data);
 
         return date.getTime();
+    }
+
+    public static String limpar_caracteres(String entrada) {
+        return entrada.replaceAll("[\\s()-._/]", "").trim();
+    }
+
+    public static void aviso(String mensagem) {
+        JOptionPane.showMessageDialog(null, mensagem, "Aviso", JOptionPane.INFORMATION_MESSAGE, null);
     }
 }

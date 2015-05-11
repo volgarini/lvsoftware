@@ -93,7 +93,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel(){&#xa;    public void paintComponent(Graphics g) {&#xa;        super.paintComponent(g);&#xa;&#xa;        Image imagem = new ImageIcon(getClass().getResource(&quot;/imagens/madurro.png&quot;)).getImage();&#xa;        g.drawImage(imagem, 0, 0, getWidth(), getHeight(), null);&#xa;    }  &#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel(){&#xa;    public void paintComponent(Graphics g) {&#xa;        super.paintComponent(g);&#xa;&#xa;        Image imagem = new ImageIcon(getClass().getResource(&quot;/imagens/fundo.png&quot;)).getImage();&#xa;        g.drawImage(imagem, 0, 0, getWidth(), getHeight(), null);&#xa;    }&#xa;}"/>
       </AuxValues>
       <LayoutCode>
         <CodeStatement>

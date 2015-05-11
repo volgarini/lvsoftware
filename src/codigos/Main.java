@@ -6,7 +6,6 @@
 package codigos;
 
 import codigos.telas.Cliente;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -38,7 +37,7 @@ public class Main extends javax.swing.JFrame {
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                Image imagem = new ImageIcon(getClass().getResource("/imagens/madurro.png")).getImage();
+                Image imagem = new ImageIcon(getClass().getResource("/imagens/fundo.png")).getImage();
                 g.drawImage(imagem, 0, 0, getWidth(), getHeight(), null);
             }
         };

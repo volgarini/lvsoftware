@@ -35,6 +35,25 @@ public class Clientes implements Serializable {
     public Clientes() {
     }
 
+    public Clientes(Integer id, String nome, Date dataNascimento, Character sexo, String nomePai, String cpfPai, String emailPai, String facebookPai, String telResPai, String telCelPai, String nomeMae, String cpfMae, String emailMae, String facebookMae, String telResMae, String telCelMae) {
+        this.id = id;
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.sexo = sexo;
+        this.nomePai = nomePai;
+        this.cpfPai = cpfPai;
+        this.emailPai = emailPai;
+        this.facebookPai = facebookPai;
+        this.telResPai = telResPai;
+        this.telCelPai = telCelPai;
+        this.nomeMae = nomeMae;
+        this.cpfMae = cpfMae;
+        this.emailMae = emailMae;
+        this.facebookMae = facebookMae;
+        this.telResMae = telResMae;
+        this.telCelMae = telCelMae;
+    }
+
     
 
     public Clientes(Integer id) {

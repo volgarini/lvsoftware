@@ -28,6 +28,7 @@ public class Cliente extends javax.swing.JInternalFrame {
 
     private ArrayList<Estados> estados;
     private ArrayList<Cidades> cidades;
+    private ClientesModel clientesModel;
 
     /**
      * Creates new form Cliente
@@ -36,6 +37,7 @@ public class Cliente extends javax.swing.JInternalFrame {
         super("Cadastro de Cliente", false, true, false, false);
         estados = new ArrayList<>();
         cidades = new ArrayList<>();
+        clientesModel = new ClientesModel();
         initComponents();
     }
 
@@ -110,7 +112,7 @@ public class Cliente extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Criança");
+        jLabel1.setText("Filho(a)");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 1, 717, 29));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -470,51 +472,67 @@ public class Cliente extends javax.swing.JInternalFrame {
             Clientes clientes = new Clientes();
             Enderecos enderecos = new Enderecos();
             //dados da criança
-            clientes.setNome(jTextField1.getText());
+
+            clientes.setNome(jTextField1.getText().trim());
+
             clientes.setDataNascimento(new Date(Suporte.date_to_milisec("dd/MM/yyyy", jFormattedTextField1.getText())));
             clientes.setSexo(jComboBox1.getSelectedIndex() == 0 ? 'M' : 'F');
 
             //dados do pai
-            clientes.setNomePai(jTextField2.getText());
-            clientes.setCpfPai(jFormattedTextField2.getText());
-            clientes.setEmailPai(jTextField3.getText());
-            clientes.setFacebookPai(jTextField4.getText());
-            clientes.setTelResPai(jFormattedTextField3.getText());
-            clientes.setTelCelPai(jFormattedTextField4.getText());
+            clientes.setNomePai(jTextField2.getText().trim());
+            clientes.setCpfPai(Suporte.limpar_caracteres(jFormattedTextField2.getText()));
+            clientes.setEmailPai(jTextField3.getText().trim());
+            clientes.setFacebookPai(jTextField4.getText().trim());
+            clientes.setTelResPai(Suporte.limpar_caracteres(jFormattedTextField3.getText()));
+            clientes.setTelCelPai(Suporte.limpar_caracteres(jFormattedTextField4.getText()));
 
             //dados da mãe
-            clientes.setNomeMae(jTextField5.getText());
-            clientes.setCpfMae(jFormattedTextField5.getText());
-            clientes.setEmailMae(jTextField6.getText());
-            clientes.setFacebookMae(jTextField7.getText());
-            clientes.setTelResMae(jFormattedTextField6.getText());
-            clientes.setTelCelMae(jFormattedTextField7.getText());
+            clientes.setNomeMae(jTextField5.getText().trim());
+            clientes.setCpfMae(Suporte.limpar_caracteres(jFormattedTextField5.getText()));
+            clientes.setEmailMae(jTextField6.getText().trim());
+            clientes.setFacebookMae(jTextField7.getText().trim());
+            clientes.setTelResMae(Suporte.limpar_caracteres(jFormattedTextField6.getText()));
+            clientes.setTelCelMae(Suporte.limpar_caracteres(jFormattedTextField7.getText()));
 
-            int id = new ClientesModel().inserir(clientes);
+            if (validarCliente(clientes)) {
+                int id = new ClientesModel().inserir(clientes);
 
-            if (id > 0) {
-                //endereço
-                enderecos.setLogradouro(jTextField10.getText());
-                enderecos.setComplemento(jTextField8.getText());
-                enderecos.setBairro(jTextField9.getText());
-                enderecos.setCep(jFormattedTextField10.getText().trim());
-                enderecos.setCidadeId(cidades.get(jComboBox2.getSelectedIndex()).getId());
-                enderecos.setClienteId(id);
-                
-                new EnderecosModel().inserir(enderecos);
-            }else{
-                
+                if (id > 0) {
+                    //endereço
+                    enderecos.setLogradouro(jTextField10.getText());
+                    enderecos.setComplemento(jTextField8.getText());
+                    enderecos.setBairro(jTextField9.getText());
+                    enderecos.setCep(Suporte.limpar_caracteres(jFormattedTextField10.getText().trim()));
+                    enderecos.setCidadeId(cidades.get(jComboBox2.getSelectedIndex()).getId());
+                    enderecos.setClienteId(id);
+
+                    new EnderecosModel().inserir(enderecos);
+                } else {
+                    Suporte.aviso("Erro ao cadastrar o cliente!");
+                }
             }
-            System.out.println(clientes.toString());
-            System.out.println(enderecos.toString());
+//            System.out.println(clientes.toString());
+//            System.out.println(enderecos.toString());
 
         } catch (ParseException ex) {
+            Suporte.aviso("Entre com uma data válida!");
             ex.printStackTrace();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private boolean validarCliente(Clientes cliente) throws SQLException {
+        if (cliente.getNome().isEmpty()) {
+            Suporte.aviso("Preencha o nome do(a) filho(a)!");
+            return false;
+        } else if (clientesModel.byNome(cliente.getNome()) != null) {
+            Suporte.aviso("O nome: " + cliente.getNome().trim() + " já está cadastrado");
+            return false;
+        }
+        //JOptionPane.showMessageDialog(this, "TESTE", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        return true;
+    }
     private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
         fillCidades(jComboBox3.getSelectedIndex());
     }//GEN-LAST:event_jComboBox3ItemStateChanged

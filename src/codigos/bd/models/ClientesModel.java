@@ -56,4 +56,17 @@ public class ClientesModel extends Banco {
 
     }
 
+    public Clientes byNome(String nome) throws SQLException{
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES WHERE NOME = ?");
+         ps.setString(1, nome);
+         
+         ResultSet rs = ps.executeQuery();
+         
+         if (rs.next()){
+             return new Clientes(rs.getInt("ID"), rs.getString("NOME"), rs.getDate("DATA_NASCIMENTO"), rs.getString("SEXO").charAt(0), 
+                     rs.getString("NOME_PAI"), rs.getString("CPF_PAI"), rs.getString("EMAIL_PAI"), rs.getString("FACEBOOK_PAI"), rs.getString("TEL_RES_PAI"), rs.getString("TEL_CEL_PAI"),
+                     rs.getString("NOME_MAE"), rs.getString("CPF_MAE"), rs.getString("EMAIL_MAE"), rs.getString("FACEBOOK_MAE"), rs.getString("TEL_RES_MAE"), rs.getString("TEL_CEL_MAE"));
+         }
+        return null;
+    }
 }
