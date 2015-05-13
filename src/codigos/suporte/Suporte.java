@@ -45,4 +45,12 @@ public class Suporte {
     public static void aviso(String mensagem) {
         JOptionPane.showMessageDialog(null, mensagem, "Aviso", JOptionPane.INFORMATION_MESSAGE, null);
     }
+    /**
+     * Método que formata data do banco de dados no segunte formato yyyy-MM-dd para o formato ddMMyyyy
+     * @param data entrada no formato yyyy-MM-dd
+     * @return retorna data no formato ddMMyyyy
+     */
+    public static String formataData(String data){
+        return data.substring(8,10) + data.substring(5,7) + data.substring(0,4);
+    }
 }

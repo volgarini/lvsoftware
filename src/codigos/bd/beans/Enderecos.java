@@ -22,13 +22,26 @@ public class Enderecos implements Serializable {
     private String complemento;
     private String bairro;
     private String cep;
-
+    private Integer estadoId;
     public Enderecos() {
     }
 
     public Enderecos(Integer id) {
         this.id = id;
     }
+
+    public Enderecos(Integer id, Integer clienteId, Integer cidadeId, String logradouro, String complemento, String bairro, String cep, Integer estadoId) {
+        this.id = id;
+        this.clienteId = clienteId;
+        this.cidadeId = cidadeId;
+        this.logradouro = logradouro;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cep = cep;
+        this.estadoId = estadoId;
+    }
+
+
 
     public Integer getId() {
         return id;
@@ -86,9 +99,18 @@ public class Enderecos implements Serializable {
         this.cep = cep;
     }
 
+    public Integer getEstadoId() {
+        return estadoId;
+    }
+
+    public void setEstadoId(Integer estadoId) {
+        this.estadoId = estadoId;
+    }
+
     @Override
     public String toString() {
-        return "Enderecos{" + "id=" + id + ", clienteId=" + clienteId + ", cidadeId=" + cidadeId + ", logradouro=" + logradouro + ", complemento=" + complemento + ", bairro=" + bairro + ", cep=" + cep + '}';
+        return "Enderecos{" + "id=" + id + ", clienteId=" + clienteId + ", cidadeId=" + cidadeId + ", logradouro=" + logradouro + ", complemento=" + complemento + ", bairro=" + bairro + ", cep=" + cep + ", estadoId=" + estadoId + '}';
     }
+
 
 }

@@ -14,31 +14,46 @@ import codigos.bd.models.ClientesModel;
 import codigos.bd.models.EnderecosModel;
 import codigos.bd.models.EstadosModel;
 import codigos.suporte.Suporte;
+import codigos.telas.modal.ModalityInternalFrame;
+import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Lucas
  */
-public class Cliente extends javax.swing.JInternalFrame {
+public class Cliente extends ModalityInternalFrame {
+
+    
 
     private ArrayList<Estados> estados;
     private ArrayList<Cidades> cidades;
+    private ArrayList<Clientes> clientes;
     private ClientesModel clientesModel;
+    private EnderecosModel enderecosModel;
+    private Clientes cli;
+    private Enderecos enderecos;
 
     /**
      * Creates new form Cliente
      */
-    public Cliente() {
-        super("Cadastro de Cliente", false, true, false, false);
+    public Cliente(JDesktopPane main) {
+        super(main, "Cadastro de Cliente", false, true);
         estados = new ArrayList<>();
         cidades = new ArrayList<>();
+        clientes = new ArrayList<>();
         clientesModel = new ClientesModel();
+        enderecosModel = new EnderecosModel();
+        cli = new Clientes(-1);
+        enderecos = new Enderecos(-1);
         initComponents();
+
     }
 
     /**
@@ -58,6 +73,7 @@ public class Cliente extends javax.swing.JInternalFrame {
         jComboBox1 = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
         jFormattedTextField1 = new javax.swing.JFormattedTextField(Suporte.mascara("##/##/####"));
+        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -72,6 +88,7 @@ public class Cliente extends javax.swing.JInternalFrame {
         jFormattedTextField3 = new javax.swing.JFormattedTextField(Suporte.mascara("(##) ####-####"));
         jLabel13 = new javax.swing.JLabel();
         jFormattedTextField4 = new javax.swing.JFormattedTextField(Suporte.mascara("(##) #####-####"));
+        jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -86,6 +103,7 @@ public class Cliente extends javax.swing.JInternalFrame {
         jFormattedTextField6 = new javax.swing.JFormattedTextField(Suporte.mascara("(##) ####-####"));
         jLabel19 = new javax.swing.JLabel();
         jFormattedTextField7 = new javax.swing.JFormattedTextField(Suporte.mascara("(##) #####-####"));
+        jButton4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -96,15 +114,19 @@ public class Cliente extends javax.swing.JInternalFrame {
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jFormattedTextField10 = new javax.swing.JFormattedTextField(Suporte.mascara("#####-###"));
+        jFormattedTextField8 = new javax.swing.JFormattedTextField(Suporte.mascara("#####-###"));
         jTextField10 = new javax.swing.JTextField();
         jComboBox2 = new javax.swing.JComboBox();
         jComboBox3 = new javax.swing.JComboBox();
+        jLabel26 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setClosable(true);
-        setOpaque(true);
+        setMaximumSize(new java.awt.Dimension(800, 600));
+        setMinimumSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setPreferredSize(new java.awt.Dimension(645, 80));
@@ -117,33 +139,49 @@ public class Cliente extends javax.swing.JInternalFrame {
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Nome:");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 37, 51, -1));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 51, -1));
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField1.setText("Lucas Tadeu Volgarini de Souza");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 36, 421, -1));
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
+        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 421, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Sexo:");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(497, 37, 45, -1));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 40, 45, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masculino", "Feminino" }));
         jComboBox1.setToolTipText("");
-        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(546, 37, 162, -1));
+        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 40, 162, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Data de Nascimento:");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 64, -1, -1));
 
         jFormattedTextField1.setColumns(10);
-        jFormattedTextField1.setText("28041984");
         jFormattedTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jPanel2.add(jFormattedTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 63, 90, -1));
+        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jFormattedTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 64, 90, -1));
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisa_pessoa.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(475, 36, 40, 30));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setPreferredSize(new java.awt.Dimension(645, 80));
@@ -156,37 +194,38 @@ public class Cliente extends javax.swing.JInternalFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Nome:");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 41, 60, 21));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 42, 60, 21));
 
         jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField2.setText("Paulo Roberto ");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 42, 421, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("CPF:");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(514, 41, -1, 21));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 42, -1, 21));
 
         jFormattedTextField1.setColumns(10);
-        jFormattedTextField2.setText("12345678900");
         jFormattedTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jPanel1.add(jFormattedTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(547, 42, 103, -1));
+        jPanel1.add(jFormattedTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 42, 103, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel10.setText("Email:");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 69, 51, 21));
 
         jTextField3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField3.setText("paukoroberto@gmail.com");
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 70, 291, -1));
+        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 69, 291, -1));
 
         jTextField4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField4.setText("/pauloroberto");
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 70, 271, -1));
+        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 69, 271, -1));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("Facebook:");
@@ -197,18 +236,24 @@ public class Cliente extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 97, -1, 21));
 
         jFormattedTextField1.setColumns(14);
-        jFormattedTextField3.setText("1636330644");
         jFormattedTextField3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jPanel1.add(jFormattedTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 98, 140, -1));
+        jPanel1.add(jFormattedTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 97, 140, -1));
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setText("Celular:");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, -1, 21));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 97, -1, 21));
 
         jFormattedTextField1.setColumns(15);
-        jFormattedTextField4.setText("16992345968");
         jFormattedTextField4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jPanel1.add(jFormattedTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 100, 140, -1));
+        jPanel1.add(jFormattedTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 97, 140, -1));
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisa_pessoa.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 36, 40, 30));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel3.setPreferredSize(new java.awt.Dimension(645, 80));
@@ -221,37 +266,38 @@ public class Cliente extends javax.swing.JInternalFrame {
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel14.setText("Nome:");
-        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 41, 60, 21));
+        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 42, 60, 21));
 
         jTextField5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField5.setText("Vera Lucia");
         jPanel3.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 42, 421, -1));
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel15.setText("CPF:");
-        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(514, 41, -1, 21));
+        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 42, -1, 21));
 
         jFormattedTextField1.setColumns(10);
-        jFormattedTextField5.setText("74185296300");
         jFormattedTextField5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jFormattedTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFormattedTextField5ActionPerformed(evt);
             }
         });
-        jPanel3.add(jFormattedTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(547, 42, 103, -1));
+        jPanel3.add(jFormattedTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 42, 103, -1));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel16.setText("Email:");
         jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 69, 51, 21));
 
         jTextField6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField6.setText("veravolgarini@gmail.com");
-        jPanel3.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 70, 291, -1));
+        jPanel3.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 69, 291, -1));
 
         jTextField7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField7.setText("/veravolgarini");
-        jPanel3.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 70, 271, -1));
+        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField7ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 69, 271, -1));
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel17.setText("Facebook:");
@@ -262,68 +308,83 @@ public class Cliente extends javax.swing.JInternalFrame {
         jPanel3.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 97, -1, 21));
 
         jFormattedTextField1.setColumns(14);
-        jFormattedTextField6.setText("1635826985");
         jFormattedTextField6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jPanel3.add(jFormattedTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 98, 140, -1));
+        jPanel3.add(jFormattedTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 97, 140, -1));
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel19.setText("Celular:");
-        jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, -1, 21));
+        jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 97, -1, 21));
 
         jFormattedTextField1.setColumns(15);
-        jFormattedTextField7.setText("16995865241");
         jFormattedTextField7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jFormattedTextField7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFormattedTextField7ActionPerformed(evt);
             }
         });
-        jPanel3.add(jFormattedTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 100, 140, -1));
+        jPanel3.add(jFormattedTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 97, 140, -1));
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisa_pessoa.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 36, 40, 30));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel4.setPreferredSize(new java.awt.Dimension(645, 80));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Endereço");
+        jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 1, 717, 29));
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel20.setText("Logradouro:");
+        jPanel4.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 41, 90, 21));
 
         jTextField8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField8.setText("Casa");
+        jPanel4.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 41, 170, -1));
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel21.setText("Complemento:");
+        jPanel4.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 41, -1, 21));
 
         jLabel22.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel22.setText("Bairro:");
+        jPanel4.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 69, 51, 21));
 
         jTextField9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField9.setText("Monte Alegre");
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField9ActionPerformed(evt);
             }
         });
+        jPanel4.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(87, 69, 291, -1));
 
         jLabel23.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel23.setText("CEP:");
+        jPanel4.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 69, -1, 21));
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel24.setText("Estado:");
+        jPanel4.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 97, -1, 21));
 
         jLabel25.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel25.setText("Cidade:");
+        jPanel4.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(151, 97, -1, 21));
 
         jFormattedTextField1.setColumns(9);
-        jFormattedTextField10.setText("14051250");
-        jFormattedTextField10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jFormattedTextField8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jPanel4.add(jFormattedTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 69, 87, -1));
 
         jTextField10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField10.setText("Rua Nioac 84");
+        jPanel4.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(87, 41, 370, -1));
 
         jComboBox2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jPanel4.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(201, 97, 191, -1));
 
         jComboBox3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         fillEstados();
@@ -334,86 +395,10 @@ public class Cliente extends javax.swing.JInternalFrame {
                 jComboBox3ItemStateChanged(evt);
             }
         });
+        jPanel4.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(87, 97, 60, -1));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 717, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jLabel24))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(354, 354, 354)
-                                .addComponent(jLabel23)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jFormattedTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(14, 14, 14))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addGap(82, 82, 82)
-                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel25)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                .addGap(3, 3, 3)
-                                .addComponent(jLabel21)))
-                        .addGap(9, 9, 9)
-                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(7, 7, 7))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jFormattedTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(6, 6, 6))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
+        jLabel26.setText("<- Falta completar o estado e cidade qdo escolhe alguem ja cadastrado");
+        jPanel4.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 100, 350, -1));
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -424,29 +409,38 @@ public class Cliente extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton5.setText("Limpar Campos");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 750, Short.MAX_VALUE)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -460,8 +454,8 @@ public class Cliente extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -469,70 +463,90 @@ public class Cliente extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            Clientes clientes = new Clientes();
-            Enderecos enderecos = new Enderecos();
-            //dados da criança
+            //dados do filho
+            cli.setNome(jTextField1.getText().trim());
 
-            clientes.setNome(jTextField1.getText().trim());
-
-            clientes.setDataNascimento(new Date(Suporte.date_to_milisec("dd/MM/yyyy", jFormattedTextField1.getText())));
-            clientes.setSexo(jComboBox1.getSelectedIndex() == 0 ? 'M' : 'F');
+            cli.setDataNascimento(new Date(Suporte.date_to_milisec("dd/MM/yyyy", jFormattedTextField1.getText())));
+            cli.setSexo(jComboBox1.getSelectedIndex() == 0 ? 'M' : 'F');
 
             //dados do pai
-            clientes.setNomePai(jTextField2.getText().trim());
-            clientes.setCpfPai(Suporte.limpar_caracteres(jFormattedTextField2.getText()));
-            clientes.setEmailPai(jTextField3.getText().trim());
-            clientes.setFacebookPai(jTextField4.getText().trim());
-            clientes.setTelResPai(Suporte.limpar_caracteres(jFormattedTextField3.getText()));
-            clientes.setTelCelPai(Suporte.limpar_caracteres(jFormattedTextField4.getText()));
+            cli.setNomePai(jTextField2.getText().trim());
+            cli.setCpfPai(Suporte.limpar_caracteres(jFormattedTextField2.getText()));
+            cli.setEmailPai(jTextField3.getText().trim());
+            cli.setFacebookPai(jTextField4.getText().trim());
+            cli.setTelResPai(Suporte.limpar_caracteres(jFormattedTextField3.getText()));
+            cli.setTelCelPai(Suporte.limpar_caracteres(jFormattedTextField4.getText()));
 
             //dados da mãe
-            clientes.setNomeMae(jTextField5.getText().trim());
-            clientes.setCpfMae(Suporte.limpar_caracteres(jFormattedTextField5.getText()));
-            clientes.setEmailMae(jTextField6.getText().trim());
-            clientes.setFacebookMae(jTextField7.getText().trim());
-            clientes.setTelResMae(Suporte.limpar_caracteres(jFormattedTextField6.getText()));
-            clientes.setTelCelMae(Suporte.limpar_caracteres(jFormattedTextField7.getText()));
+            cli.setNomeMae(jTextField5.getText().trim());
+            cli.setCpfMae(Suporte.limpar_caracteres(jFormattedTextField5.getText()));
+            cli.setEmailMae(jTextField6.getText().trim());
+            cli.setFacebookMae(jTextField7.getText().trim());
+            cli.setTelResMae(Suporte.limpar_caracteres(jFormattedTextField6.getText()));
+            cli.setTelCelMae(Suporte.limpar_caracteres(jFormattedTextField7.getText()));
 
-            if (validarCliente(clientes)) {
-                int id = new ClientesModel().inserir(clientes);
+            if (validarCliente()) {
+                int id = -1;
+
+                if (cli.getId() > 0) {
+                    id = cli.getId();
+                    clientesModel.atualizar(cli);
+                } else {
+                    id = clientesModel.inserir(cli);
+                }
 
                 if (id > 0) {
                     //endereço
                     enderecos.setLogradouro(jTextField10.getText());
                     enderecos.setComplemento(jTextField8.getText());
                     enderecos.setBairro(jTextField9.getText());
-                    enderecos.setCep(Suporte.limpar_caracteres(jFormattedTextField10.getText().trim()));
+                    enderecos.setCep(Suporte.limpar_caracteres(jFormattedTextField8.getText().trim()));
                     enderecos.setCidadeId(cidades.get(jComboBox2.getSelectedIndex()).getId());
                     enderecos.setClienteId(id);
+                    enderecos.setEstadoId(estados.get(jComboBox3.getSelectedIndex()).getId());
 
-                    new EnderecosModel().inserir(enderecos);
+                    if (enderecos.getId() > 0) {
+                        enderecosModel.atualizar(enderecos);
+                    } else {
+                        enderecosModel.inserir(enderecos);
+                    }
+                    Suporte.aviso("Dados salvos com sucesso!");
                 } else {
                     Suporte.aviso("Erro ao cadastrar o cliente!");
                 }
             }
-//            System.out.println(clientes.toString());
-//            System.out.println(enderecos.toString());
 
         } catch (ParseException ex) {
             Suporte.aviso("Entre com uma data válida!");
             ex.printStackTrace();
         } catch (SQLException ex) {
             ex.printStackTrace();
+            Suporte.aviso("Ocorreu um erro no banco de dados!");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private boolean validarCliente(Clientes cliente) throws SQLException {
-        if (cliente.getNome().isEmpty()) {
+    private boolean validarCliente() throws SQLException {
+        if (cli.getNome().isEmpty()) {
             Suporte.aviso("Preencha o nome do(a) filho(a)!");
             return false;
-        } else if (clientesModel.byNome(cliente.getNome()) != null) {
-            Suporte.aviso("O nome: " + cliente.getNome().trim() + " já está cadastrado");
+        }
+        Clientes cliTemp = clientesModel.byNome(cli.getNome());
+
+        if (cli.getId() == -1 && cliTemp.getId() > 0) {
+            Suporte.aviso("O nome: " + cliTemp.getNome().trim() + " já está cadastrado");
             return false;
         }
         //JOptionPane.showMessageDialog(this, "TESTE", "Aviso", JOptionPane.INFORMATION_MESSAGE);
         return true;
     }
+
+    @Override
+    protected void childClosing() {
+        super.childClosing(); //To change body of generated methods, choose Tools | Templates.
+        fillCampos();
+    }
+
+
     private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
         fillCidades(jComboBox3.getSelectedIndex());
     }//GEN-LAST:event_jComboBox3ItemStateChanged
@@ -556,6 +570,157 @@ public class Cliente extends javax.swing.JInternalFrame {
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField9ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        tabelaBusca();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField7ActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            tabelaBusca();
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        jTextField1.setText("");
+        jFormattedTextField1.setText("");
+        jComboBox1.setSelectedIndex(0);
+
+        //pai
+        jTextField2.setText("");
+        jFormattedTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jFormattedTextField3.setText("");
+        jFormattedTextField4.setText("");
+
+        //mãe
+        jTextField5.setText("");
+        jFormattedTextField5.setText("");
+        jTextField6.setText("");
+        jTextField7.setText("");
+        jFormattedTextField6.setText("");
+        jFormattedTextField7.setText("");
+
+        //endereco
+        jTextField8.setText("");
+        jTextField9.setText("");
+        jTextField10.setText("");
+        jFormattedTextField8.setText("");
+
+        cli = new Clientes(-1);
+        enderecos = new Enderecos(-1);
+        linha = -1;
+        jButton1.setText("Cadastrar");
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        tabelaClentePais("NOME_PAI", jTextField2.getText().trim());
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        tabelaClentePais("NOME_MAE", jTextField5.getText().trim());
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void tabelaClentePais(String parent, String nome) {
+        try {
+            if (!nome.isEmpty()) {
+                clientes = clientesModel.likeParent(parent, nome);
+            } else {
+                clientes = clientesModel.getAllParent(parent);
+            }
+
+            if (clientes.size() > 0) {
+                TabelaBusca tabelaCliente = new TabelaBusca(this, clientes, null);
+                JOptionPane.getDesktopPaneForComponent(this).add(tabelaCliente);
+                tabelaCliente.show();
+            } else {
+                Suporte.aviso("Nenhum registro encontrado!");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void tabelaBusca() {
+        String nome = jTextField1.getText().trim();
+
+        try {
+            if (!nome.isEmpty()) {
+                clientes = clientesModel.likeNome(nome);
+            } else {
+                clientes = clientesModel.getAll();
+            }
+
+            if (clientes.size() > 0) {
+                TabelaBusca tabelaCliente = new TabelaBusca(this, clientes, null);
+                JOptionPane.getDesktopPaneForComponent(this).add(tabelaCliente);
+                tabelaCliente.show();
+            } else {
+                Suporte.aviso("Nenhum registro encontrado!");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    private void fillCampos() {
+        if (linha > -1 && clientes.size() > 0) {
+            try {
+                cli = clientes.get(linha);
+                jTextField1.setText(cli.getNome());
+                jFormattedTextField1.setText(Suporte.formataData(cli.getDataNascimento().toString()));
+                jComboBox1.setSelectedIndex(cli.getSexo() == 'M' ? 0 : 1);
+
+                //pai
+                jTextField2.setText(cli.getNomePai());
+                jFormattedTextField2.setText(cli.getCpfPai());
+                jTextField3.setText(cli.getEmailPai());
+                jTextField4.setText(cli.getFacebookPai());
+                jFormattedTextField3.setText(cli.getTelResPai());
+                jFormattedTextField4.setText(cli.getTelCelPai());
+
+                //mãe
+                jTextField5.setText(cli.getNomeMae());
+                jFormattedTextField5.setText(cli.getCpfMae());
+                jTextField6.setText(cli.getEmailMae());
+                jTextField7.setText(cli.getFacebookMae());
+                jFormattedTextField6.setText(cli.getTelResMae());
+                jFormattedTextField7.setText(cli.getTelCelMae());
+
+                //endereco
+                enderecos = enderecosModel.byClienteId(cli.getId());
+                if (enderecos.getId() > 0) {
+                    jTextField8.setText(enderecos.getComplemento());
+                    jTextField9.setText(enderecos.getBairro());
+                    jTextField10.setText(enderecos.getLogradouro());
+                    jFormattedTextField8.setText(enderecos.getCep());
+                }
+
+                jButton1.setText("Atualizar");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+            linha = -1;
+            clientes.clear();
+        }
+    }
 
     private void fillEstados() {
         DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
@@ -582,17 +747,21 @@ public class Cliente extends javax.swing.JInternalFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
     private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField10;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JFormattedTextField jFormattedTextField3;
     private javax.swing.JFormattedTextField jFormattedTextField4;
     private javax.swing.JFormattedTextField jFormattedTextField5;
     private javax.swing.JFormattedTextField jFormattedTextField6;
     private javax.swing.JFormattedTextField jFormattedTextField7;
+    private javax.swing.JFormattedTextField jFormattedTextField8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -611,6 +780,7 @@ public class Cliente extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

@@ -13,8 +13,8 @@ import java.sql.Date;
  * @author Lucas
  */
 public class Clientes implements Serializable {
-
     private static final long serialVersionUID = 1L;
+    
     private Integer id;
     private String nome;
     private Date dataNascimento;
@@ -54,7 +54,7 @@ public class Clientes implements Serializable {
         this.telCelMae = telCelMae;
     }
 
-    
+        
 
     public Clientes(Integer id) {
         this.id = id;
