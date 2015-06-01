@@ -6,13 +6,12 @@
 package codigos.bd.beans;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  *
  * @author Lucas
  */
-public class Produtos implements Serializable {
+public class Produtos implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -36,6 +35,7 @@ public class Produtos implements Serializable {
         this.quantidade = quantidade;
     }
 
+    
     public Integer getId() {
         return id;
     }
@@ -78,7 +78,9 @@ public class Produtos implements Serializable {
 
     @Override
     public String toString() {
-        return "Produtos{" + "id=" + id + ", descricao=" + descricao + ", codigoBarras=" + codigoBarras + ", valor=" + valor + ", quantidade=" + quantidade + '}';
+        return getDescricao();
+        //return getDescricao() + " - R$ " + String.format("%.2f", getValor());
+        //return "Produtos{" + "id=" + id + ", descricao=" + descricao + ", codigoBarras=" + codigoBarras + ", valor=" + valor + ", quantidade=" + quantidade + '}';
     }
 
 }

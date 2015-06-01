@@ -7,9 +7,11 @@ package codigos.bd.models;
 
 import codigos.bd.Banco;
 import codigos.bd.beans.Cidades;
+import codigos.bd.beans.Estados;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -21,7 +23,7 @@ public class CidadesModel extends Banco {
     public ArrayList<Cidades> getCidades(int estadoId) {
         ArrayList<Cidades> cidades = new ArrayList<>();
         PreparedStatement ps;
-        
+
         try {
             ps = getConnection().prepareStatement("SELECT * FROM CIDADES WHERE ESTADO_ID = ?");
             ps.setInt(1, estadoId);
@@ -30,12 +32,30 @@ public class CidadesModel extends Banco {
             while (rs.next()) {
                 cidades.add(new Cidades(rs.getInt("ID"), rs.getInt("ESTADO_ID"), rs.getString("NOME")));
             }
-            
-            fechar();
+
         } catch (SQLException ex) {
             ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
         }
-        
+
         return cidades;
+    }
+
+    public int inserir(Cidades cidade) throws SQLException, ClassNotFoundException {
+        PreparedStatement ps = getConnection().prepareStatement("INSERT INTO CIDADES (ESTADO_ID, NOME) "
+                + "VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+        ps.setInt(1, cidade.getEstadoId());
+        ps.setString(2, cidade.getNome());
+
+        if (ps.executeUpdate() > 0) {
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return -1;
+
     }
 }

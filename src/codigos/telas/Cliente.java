@@ -13,13 +13,14 @@ import codigos.bd.models.CidadesModel;
 import codigos.bd.models.ClientesModel;
 import codigos.bd.models.EnderecosModel;
 import codigos.bd.models.EstadosModel;
-import codigos.suporte.Suporte;
 import codigos.telas.modal.ModalityInternalFrame;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
@@ -30,14 +31,12 @@ import javax.swing.JOptionPane;
  */
 public class Cliente extends ModalityInternalFrame {
 
-    
-
-    private ArrayList<Estados> estados;
-    private ArrayList<Cidades> cidades;
-    private ArrayList<Clientes> clientes;
+    private ArrayList<Estados> estadosArray;
+    private ArrayList<Cidades> cidadesArray;
+    private ArrayList<Clientes> clientesArray;
     private ClientesModel clientesModel;
     private EnderecosModel enderecosModel;
-    private Clientes cli;
+    private Clientes clientes;
     private Enderecos enderecos;
 
     /**
@@ -45,12 +44,12 @@ public class Cliente extends ModalityInternalFrame {
      */
     public Cliente(JDesktopPane main) {
         super(main, "Cadastro de Cliente", false, true);
-        estados = new ArrayList<>();
-        cidades = new ArrayList<>();
-        clientes = new ArrayList<>();
+        estadosArray = new ArrayList<>();
+        cidadesArray = new ArrayList<>();
+        clientesArray = new ArrayList<>();
         clientesModel = new ClientesModel();
         enderecosModel = new EnderecosModel();
-        cli = new Clientes(-1);
+        clientes = new Clientes(-1);
         enderecos = new Enderecos(-1);
         initComponents();
 
@@ -72,37 +71,37 @@ public class Cliente extends ModalityInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField(Suporte.mascara("##/##/####"));
+        jFormattedTextField1 = new javax.swing.JFormattedTextField(super.mascara("##/##/####", true));
         jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField(Suporte.mascara("###.###.###-##"));
+        jFormattedTextField2 = new javax.swing.JFormattedTextField(super.mascara("###.###.###-##", true));
         jLabel10 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jFormattedTextField3 = new javax.swing.JFormattedTextField(Suporte.mascara("(##) ####-####"));
+        jFormattedTextField3 = new javax.swing.JFormattedTextField(super.mascara("(##) ####-####", true));
         jLabel13 = new javax.swing.JLabel();
-        jFormattedTextField4 = new javax.swing.JFormattedTextField(Suporte.mascara("(##) #####-####"));
+        jFormattedTextField4 = new javax.swing.JFormattedTextField(super.mascara("(##) #####-####", true));
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jFormattedTextField5 = new javax.swing.JFormattedTextField(Suporte.mascara("###.###.###-##"));
+        jFormattedTextField5 = new javax.swing.JFormattedTextField(super.mascara("###.###.###-##", true));
         jLabel16 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jFormattedTextField6 = new javax.swing.JFormattedTextField(Suporte.mascara("(##) ####-####"));
+        jFormattedTextField6 = new javax.swing.JFormattedTextField(super.mascara("(##) ####-####", true));
         jLabel19 = new javax.swing.JLabel();
-        jFormattedTextField7 = new javax.swing.JFormattedTextField(Suporte.mascara("(##) #####-####"));
+        jFormattedTextField7 = new javax.swing.JFormattedTextField(super.mascara("(##) #####-####", true));
         jButton4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -114,7 +113,7 @@ public class Cliente extends ModalityInternalFrame {
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jFormattedTextField8 = new javax.swing.JFormattedTextField(Suporte.mascara("#####-###"));
+        jFormattedTextField8 = new javax.swing.JFormattedTextField(super.mascara("#####-###", true));
         jTextField10 = new javax.swing.JTextField();
         jComboBox2 = new javax.swing.JComboBox();
         jComboBox3 = new javax.swing.JComboBox();
@@ -122,6 +121,7 @@ public class Cliente extends ModalityInternalFrame {
         jPanel5 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setClosable(true);
         setMaximumSize(new java.awt.Dimension(800, 600));
@@ -416,12 +416,22 @@ public class Cliente extends ModalityInternalFrame {
             }
         });
 
+        jButton6.setText("Excluir");
+        jButton6.setVisible(false);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -430,7 +440,8 @@ public class Cliente extends ModalityInternalFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -464,35 +475,35 @@ public class Cliente extends ModalityInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             //dados do filho
-            cli.setNome(jTextField1.getText().trim());
+            clientes.setNome(jTextField1.getText().trim());
 
-            cli.setDataNascimento(new Date(Suporte.date_to_milisec("dd/MM/yyyy", jFormattedTextField1.getText())));
-            cli.setSexo(jComboBox1.getSelectedIndex() == 0 ? 'M' : 'F');
+            clientes.setDataNascimento(new Date(super.date_to_milisec("dd/MM/yyyy", jFormattedTextField1.getText())));
+            clientes.setSexo(jComboBox1.getSelectedIndex() == 0 ? 'M' : 'F');
 
             //dados do pai
-            cli.setNomePai(jTextField2.getText().trim());
-            cli.setCpfPai(Suporte.limpar_caracteres(jFormattedTextField2.getText()));
-            cli.setEmailPai(jTextField3.getText().trim());
-            cli.setFacebookPai(jTextField4.getText().trim());
-            cli.setTelResPai(Suporte.limpar_caracteres(jFormattedTextField3.getText()));
-            cli.setTelCelPai(Suporte.limpar_caracteres(jFormattedTextField4.getText()));
+            clientes.setNomePai(jTextField2.getText().trim());
+            clientes.setCpfPai(super.limpar_caracteres(jFormattedTextField2.getText()));
+            clientes.setEmailPai(jTextField3.getText().trim());
+            clientes.setFacebookPai(jTextField4.getText().trim());
+            clientes.setTelResPai(super.limpar_caracteres(jFormattedTextField3.getText()));
+            clientes.setTelCelPai(super.limpar_caracteres(jFormattedTextField4.getText()));
 
             //dados da mãe
-            cli.setNomeMae(jTextField5.getText().trim());
-            cli.setCpfMae(Suporte.limpar_caracteres(jFormattedTextField5.getText()));
-            cli.setEmailMae(jTextField6.getText().trim());
-            cli.setFacebookMae(jTextField7.getText().trim());
-            cli.setTelResMae(Suporte.limpar_caracteres(jFormattedTextField6.getText()));
-            cli.setTelCelMae(Suporte.limpar_caracteres(jFormattedTextField7.getText()));
+            clientes.setNomeMae(jTextField5.getText().trim());
+            clientes.setCpfMae(super.limpar_caracteres(jFormattedTextField5.getText()));
+            clientes.setEmailMae(jTextField6.getText().trim());
+            clientes.setFacebookMae(jTextField7.getText().trim());
+            clientes.setTelResMae(super.limpar_caracteres(jFormattedTextField6.getText()));
+            clientes.setTelCelMae(super.limpar_caracteres(jFormattedTextField7.getText()));
 
             if (validarCliente()) {
                 int id = -1;
 
-                if (cli.getId() > 0) {
-                    id = cli.getId();
-                    clientesModel.atualizar(cli);
+                if (clientes.getId() > 0) {
+                    id = clientes.getId();
+                    clientesModel.atualizar(clientes);
                 } else {
-                    id = clientesModel.inserir(cli);
+                    id = clientesModel.inserir(clientes);
                 }
 
                 if (id > 0) {
@@ -500,40 +511,42 @@ public class Cliente extends ModalityInternalFrame {
                     enderecos.setLogradouro(jTextField10.getText());
                     enderecos.setComplemento(jTextField8.getText());
                     enderecos.setBairro(jTextField9.getText());
-                    enderecos.setCep(Suporte.limpar_caracteres(jFormattedTextField8.getText().trim()));
-                    enderecos.setCidadeId(cidades.get(jComboBox2.getSelectedIndex()).getId());
+                    enderecos.setCep(super.limpar_caracteres(jFormattedTextField8.getText().trim()));
+                    enderecos.setCidadeId(cidadesArray.get(jComboBox2.getSelectedIndex()).getId());
                     enderecos.setClienteId(id);
-                    enderecos.setEstadoId(estados.get(jComboBox3.getSelectedIndex()).getId());
+                    enderecos.setEstadoId(estadosArray.get(jComboBox3.getSelectedIndex()).getId());
 
                     if (enderecos.getId() > 0) {
                         enderecosModel.atualizar(enderecos);
                     } else {
                         enderecosModel.inserir(enderecos);
                     }
-                    Suporte.aviso("Dados salvos com sucesso!");
+                    super.avisar("Dados salvos com sucesso!");
                 } else {
-                    Suporte.aviso("Erro ao cadastrar o cliente!");
+                    super.avisar("Erro ao cadastrar o cliente!");
                 }
             }
 
         } catch (ParseException ex) {
-            Suporte.aviso("Entre com uma data válida!");
+            super.avisar("Entre com uma data válida!");
             ex.printStackTrace();
         } catch (SQLException ex) {
             ex.printStackTrace();
-            Suporte.aviso("Ocorreu um erro no banco de dados!");
+            super.avisar("Ocorreu um erro no banco de dados!");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private boolean validarCliente() throws SQLException {
-        if (cli.getNome().isEmpty()) {
-            Suporte.aviso("Preencha o nome do(a) filho(a)!");
+    private boolean validarCliente() throws SQLException, ClassNotFoundException {
+        if (clientes.getNome().isEmpty()) {
+            super.avisar("Preencha o nome do(a) filho(a)!");
             return false;
         }
-        Clientes cliTemp = clientesModel.byNome(cli.getNome());
+        Clientes cliTemp = clientesModel.byNome(clientes.getNome());
 
-        if (cli.getId() == -1 && cliTemp.getId() > 0) {
-            Suporte.aviso("O nome: " + cliTemp.getNome().trim() + " já está cadastrado");
+        if (clientes.getId() == -1 && cliTemp.getId() > 0) {
+            super.avisar("O nome: " + cliTemp.getNome().trim() + " já está cadastrado");
             return false;
         }
         //JOptionPane.showMessageDialog(this, "TESTE", "Aviso", JOptionPane.INFORMATION_MESSAGE);
@@ -594,6 +607,82 @@ public class Cliente extends ModalityInternalFrame {
     }//GEN-LAST:event_jTextField1KeyPressed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        tabelaClentePais("NOME_PAI", jTextField2.getText().trim());
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        tabelaClentePais("NOME_MAE", jTextField5.getText().trim());
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        try {
+
+            if (super.confirmar("Deseja realmente apagar esse cliente?") == 0 && clientes.getId() > 0) {
+                clientesModel.desativar(clientes);
+                limparCampos();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            super.avisar("Falha ao excluir os dados!");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void tabelaClentePais(String parent, String nome) {
+        try {
+            if (!nome.isEmpty()) {
+                clientesArray = clientesModel.likeParent(parent, nome);
+            } else {
+                clientesArray = clientesModel.getAllParent(parent);
+            }
+
+            if (clientesArray.size() > 0) {
+                TabelaBusca tabelaCliente = new TabelaBusca(this, clientesArray, null, null);
+                JOptionPane.getDesktopPaneForComponent(this).add(tabelaCliente);
+                tabelaCliente.show();
+            } else {
+                super.avisar("Nenhum registro encontrado!");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void tabelaBusca() {
+        String nome = jTextField1.getText().trim();
+
+        try {
+            if (!nome.isEmpty()) {
+                clientesArray = clientesModel.likeNome(nome);
+            } else {
+                clientesArray = clientesModel.getAll();
+            }
+
+            if (clientesArray.size() > 0) {
+                TabelaBusca tabelaCliente = new TabelaBusca(this, clientesArray, null, null);
+                JOptionPane.getDesktopPaneForComponent(this).add(tabelaCliente);
+                tabelaCliente.show();
+            } else {
+                super.avisar("Nenhum registro encontrado!");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    private void limparCampos() {
         jTextField1.setText("");
         jFormattedTextField1.setText("");
         jComboBox1.setSelectedIndex(0);
@@ -620,91 +709,39 @@ public class Cliente extends ModalityInternalFrame {
         jTextField10.setText("");
         jFormattedTextField8.setText("");
 
-        cli = new Clientes(-1);
+        clientes = new Clientes(-1);
         enderecos = new Enderecos(-1);
         linha = -1;
         jButton1.setText("Cadastrar");
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        tabelaClentePais("NOME_PAI", jTextField2.getText().trim());
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        tabelaClentePais("NOME_MAE", jTextField5.getText().trim());
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void tabelaClentePais(String parent, String nome) {
-        try {
-            if (!nome.isEmpty()) {
-                clientes = clientesModel.likeParent(parent, nome);
-            } else {
-                clientes = clientesModel.getAllParent(parent);
-            }
-
-            if (clientes.size() > 0) {
-                TabelaBusca tabelaCliente = new TabelaBusca(this, clientes, null);
-                JOptionPane.getDesktopPaneForComponent(this).add(tabelaCliente);
-                tabelaCliente.show();
-            } else {
-                Suporte.aviso("Nenhum registro encontrado!");
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void tabelaBusca() {
-        String nome = jTextField1.getText().trim();
-
-        try {
-            if (!nome.isEmpty()) {
-                clientes = clientesModel.likeNome(nome);
-            } else {
-                clientes = clientesModel.getAll();
-            }
-
-            if (clientes.size() > 0) {
-                TabelaBusca tabelaCliente = new TabelaBusca(this, clientes, null);
-                JOptionPane.getDesktopPaneForComponent(this).add(tabelaCliente);
-                tabelaCliente.show();
-            } else {
-                Suporte.aviso("Nenhum registro encontrado!");
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
+        jButton6.setVisible(false);
     }
 
     private void fillCampos() {
-        if (linha > -1 && clientes.size() > 0) {
+        if (linha > -1 && clientesArray.size() > 0) {
             try {
-                cli = clientes.get(linha);
-                jTextField1.setText(cli.getNome());
-                jFormattedTextField1.setText(Suporte.formataData(cli.getDataNascimento().toString()));
-                jComboBox1.setSelectedIndex(cli.getSexo() == 'M' ? 0 : 1);
+                clientes = clientesArray.get(linha);
+                jTextField1.setText(clientes.getNome());
+                jFormattedTextField1.setText(super.formataData(clientes.getDataNascimento().toString()));
+                jComboBox1.setSelectedIndex(clientes.getSexo() == 'M' ? 0 : 1);
 
                 //pai
-                jTextField2.setText(cli.getNomePai());
-                jFormattedTextField2.setText(cli.getCpfPai());
-                jTextField3.setText(cli.getEmailPai());
-                jTextField4.setText(cli.getFacebookPai());
-                jFormattedTextField3.setText(cli.getTelResPai());
-                jFormattedTextField4.setText(cli.getTelCelPai());
+                jTextField2.setText(clientes.getNomePai());
+                jFormattedTextField2.setText(clientes.getCpfPai());
+                jTextField3.setText(clientes.getEmailPai());
+                jTextField4.setText(clientes.getFacebookPai());
+                jFormattedTextField3.setText(clientes.getTelResPai());
+                jFormattedTextField4.setText(clientes.getTelCelPai());
 
                 //mãe
-                jTextField5.setText(cli.getNomeMae());
-                jFormattedTextField5.setText(cli.getCpfMae());
-                jTextField6.setText(cli.getEmailMae());
-                jTextField7.setText(cli.getFacebookMae());
-                jFormattedTextField6.setText(cli.getTelResMae());
-                jFormattedTextField7.setText(cli.getTelCelMae());
+                jTextField5.setText(clientes.getNomeMae());
+                jFormattedTextField5.setText(clientes.getCpfMae());
+                jTextField6.setText(clientes.getEmailMae());
+                jTextField7.setText(clientes.getFacebookMae());
+                jFormattedTextField6.setText(clientes.getTelResMae());
+                jFormattedTextField7.setText(clientes.getTelCelMae());
 
                 //endereco
-                enderecos = enderecosModel.byClienteId(cli.getId());
+                enderecos = enderecosModel.byClienteId(clientes.getId());
                 if (enderecos.getId() > 0) {
                     jTextField8.setText(enderecos.getComplemento());
                     jTextField9.setText(enderecos.getBairro());
@@ -713,21 +750,24 @@ public class Cliente extends ModalityInternalFrame {
                 }
 
                 jButton1.setText("Atualizar");
+                jButton6.setVisible(true);
             } catch (SQLException ex) {
                 ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             linha = -1;
-            clientes.clear();
+            clientesArray.clear();
         }
     }
 
     private void fillEstados() {
         DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
         jComboBox3.removeAllItems();
-        estados = new EstadosModel().getEstados();
+        estadosArray = new EstadosModel().getEstados();
 
-        for (Estados estado : estados) {
+        for (Estados estado : estadosArray) {
             comboBoxModel.addElement(estado);
         }
         jComboBox3.setModel(comboBoxModel);
@@ -736,14 +776,16 @@ public class Cliente extends ModalityInternalFrame {
     private void fillCidades(int index) {
         DefaultComboBoxModel comboCidades = new DefaultComboBoxModel();
         jComboBox2.removeAllItems();
-        Estados uf = estados.get(index);
+        if (!estadosArray.isEmpty()) {
+            Estados uf = estadosArray.get(index);
 
-        cidades = new CidadesModel().getCidades(uf.getId());
+            cidadesArray = new CidadesModel().getCidades(uf.getId());
 
-        for (Cidades cidade : cidades) {
-            comboCidades.addElement(cidade);
+            for (Cidades cidade : cidadesArray) {
+                comboCidades.addElement(cidade);
+            }
+            jComboBox2.setModel(comboCidades);
         }
-        jComboBox2.setModel(comboCidades);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -751,6 +793,7 @@ public class Cliente extends ModalityInternalFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;

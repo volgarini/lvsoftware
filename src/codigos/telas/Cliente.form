@@ -167,7 +167,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jFormattedTextField1ActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Suporte.mascara(&quot;##/##/####&quot;))"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(super.mascara(&quot;##/##/####&quot;, true))"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jFormattedTextField1.setColumns(10);"/>
           </AuxValues>
           <Constraints>
@@ -271,7 +271,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Suporte.mascara(&quot;###.###.###-##&quot;))"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(super.mascara(&quot;###.###.###-##&quot;, true))"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jFormattedTextField1.setColumns(10);"/>
           </AuxValues>
           <Constraints>
@@ -353,7 +353,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Suporte.mascara(&quot;(##) ####-####&quot;))"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(super.mascara(&quot;(##) ####-####&quot;, true))"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jFormattedTextField1.setColumns(14);"/>
           </AuxValues>
           <Constraints>
@@ -382,7 +382,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Suporte.mascara(&quot;(##) #####-####&quot;))"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(super.mascara(&quot;(##) #####-####&quot;, true))"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jFormattedTextField1.setColumns(15);"/>
           </AuxValues>
           <Constraints>
@@ -486,7 +486,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jFormattedTextField5ActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Suporte.mascara(&quot;###.###.###-##&quot;))"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(super.mascara(&quot;###.###.###-##&quot;, true))"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jFormattedTextField1.setColumns(10);"/>
           </AuxValues>
           <Constraints>
@@ -568,7 +568,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Suporte.mascara(&quot;(##) ####-####&quot;))"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(super.mascara(&quot;(##) ####-####&quot;, true))"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jFormattedTextField1.setColumns(14);"/>
           </AuxValues>
           <Constraints>
@@ -600,7 +600,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jFormattedTextField7ActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Suporte.mascara(&quot;(##) #####-####&quot;))"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(super.mascara(&quot;(##) #####-####&quot;, true))"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jFormattedTextField1.setColumns(15);"/>
           </AuxValues>
           <Constraints>
@@ -768,7 +768,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Suporte.mascara(&quot;#####-###&quot;))"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(super.mascara(&quot;#####-###&quot;, true))"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jFormattedTextField1.setColumns(9);"/>
           </AuxValues>
           <Constraints>
@@ -848,6 +848,8 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="jButton6" min="-2" pref="132" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton5" min="-2" pref="132" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton1" min="-2" pref="132" max="-2" attributes="0"/>
@@ -859,6 +861,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton1" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                   <Component id="jButton5" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                  <Component id="jButton6" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -879,6 +882,17 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton6">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Excluir"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton6ActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButton6.setVisible(false);"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

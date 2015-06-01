@@ -10,6 +10,9 @@ import codigos.bd.beans.Estados;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 
 /**
@@ -30,11 +33,29 @@ public class EstadosModel extends Banco {
             while (rs.next()) {
                 estados.add(new Estados(rs.getInt("ID"), rs.getString("NOME"), rs.getString("SIGLA")));
             }
-            fechar();
         } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
 
         return estados;
+    }
+
+    public int inserir(Estados estado) throws SQLException, ClassNotFoundException {
+        PreparedStatement ps = getConnection().prepareStatement("INSERT INTO ESTADOS (NOME, SIGLA) "
+                + "VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+        ps.setString(1, estado.getNome());
+        ps.setString(2, estado.getSigla());
+
+        if (ps.executeUpdate() > 0) {
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return -1;
+
     }
 }

@@ -23,8 +23,7 @@ public class ProdutosModel extends Banco {
     public ProdutosModel() {
     }
 
-    public int inserir(Produtos produto) throws SQLException {
-        System.out.println(produto);
+    public int inserir(Produtos produto) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("INSERT INTO PRODUTOS "
                 + "(DESCRICAO, CODIGO_BARRAS, VALOR, QUANTIDADE, DATA_CADASTRO)"
                 + " VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -41,31 +40,43 @@ public class ProdutosModel extends Banco {
                 return rs.getInt(1);
             }
         }
-        return 0;
+        return -1;
 
     }
-    
-    public int atualizar(Produtos produto) throws SQLException {
+
+    public int atualizar(Produtos produto) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("UPDATE PRODUTOS SET "
                 + "DESCRICAO = ?, CODIGO_BARRAS = ?, VALOR = ?, QUANTIDADE = ?"
                 + " WHERE ID = ?");
 
         ps.setString(1, produto.getDescricao());
         ps.setString(2, produto.getCodigoBarras());
-        ps.setInt(3, produto.getQuantidade());
-        ps.setFloat(4, produto.getValor());
+        ps.setFloat(3, produto.getValor());
+        ps.setInt(4, produto.getQuantidade());
         ps.setInt(5, produto.getId());
-        
 
         if (ps.executeUpdate() > 0) {
             return produto.getId();
         }
-        return 0;
+        return -1;
 
     }
 
-    public Produtos byDescricao(String descricao) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS WHERE DESCRICAO = ?");
+    public int desativar(Produtos produto) throws SQLException, ClassNotFoundException {
+        PreparedStatement ps = getConnection().prepareStatement("UPDATE PRODUTOS SET "
+                + "DATA_EXCLUSAO = ? WHERE ID = ?");
+
+        ps.setDate(1, new Date(System.currentTimeMillis()));
+        ps.setInt(2, produto.getId());
+
+        if (ps.executeUpdate() > 0) {
+            return produto.getId();
+        }
+        return -1;
+    }
+
+    public Produtos byDescricao(String descricao) throws SQLException, ClassNotFoundException {
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS WHERE DESCRICAO = ? AND DATA_EXCLUSAO IS NULL");
         ps.setString(1, descricao);
 
         ResultSet rs = ps.executeQuery();
@@ -76,10 +87,10 @@ public class ProdutosModel extends Banco {
         return new Produtos(-1);
     }
 
-    public ArrayList<Produtos> likeDescricao(String descricao) throws SQLException {
+    public ArrayList<Produtos> likeDescricao(String descricao) throws SQLException, ClassNotFoundException {
         ArrayList<Produtos> produtos = new ArrayList<>();
 
-        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS WHERE lower(DESCRICAO) LIKE lower('%" + descricao + "%')");
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS WHERE lower(DESCRICAO) LIKE lower('%" + descricao + "%') AND DATA_EXCLUSAO IS NULL");
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
@@ -89,10 +100,10 @@ public class ProdutosModel extends Banco {
         return produtos;
     }
 
-    public ArrayList<Produtos> getAll() throws SQLException {
+    public ArrayList<Produtos> getAll() throws SQLException, ClassNotFoundException {
         ArrayList<Produtos> produtos = new ArrayList<>();
 
-        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS");
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS WHERE DATA_EXCLUSAO IS NULL ORDER BY DESCRICAO");
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {

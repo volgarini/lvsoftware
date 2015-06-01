@@ -6,6 +6,7 @@
 package codigos.telas;
 
 import codigos.bd.beans.Clientes;
+import codigos.bd.beans.Pagamentos;
 import codigos.bd.beans.Produtos;
 import codigos.telas.modal.ModalityInternalFrame;
 import java.awt.event.MouseAdapter;
@@ -23,8 +24,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TabelaBusca extends ModalityInternalFrame {
 
-    private ArrayList<Clientes> clientes;
-    private ArrayList<Produtos> produtos;
+    private final ArrayList<Clientes> clientes;
+    private final ArrayList<Produtos> produtos;
+    private final ArrayList<Pagamentos> pagamentos;
 
     /**
      * Creates new form TabelaCliente
@@ -32,15 +34,20 @@ public class TabelaBusca extends ModalityInternalFrame {
     /**
      * Creates new form TabelaCliente
      *
+     * @param component
      * @param clientes
+     * @param produtos
      */
-    public TabelaBusca(JComponent component, ArrayList<Clientes> clientes, ArrayList<Produtos> produtos) {
+    public TabelaBusca(JComponent component, ArrayList<Clientes> clientes, ArrayList<Produtos> produtos, ArrayList<Pagamentos> pagamentos) {
         super(component, "", false, true);
         this.clientes = clientes;
         this.produtos = produtos;
+        this.pagamentos = pagamentos;
         initComponents();
         fillTable();
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,6 +108,11 @@ public class TabelaBusca extends ModalityInternalFrame {
             model.setColumnIdentifiers(new String[]{"Id", "Descrição", "Valor", "Quantidade"});
             for (Produtos produto : produtos) {
                 model.addRow(new String[]{String.valueOf(produto.getId()), produto.getDescricao(), "R$ " + String.valueOf(produto.getValor()), String.valueOf(produto.getQuantidade())});
+            }
+        }else if (pagamentos != null) {
+            model.setColumnIdentifiers(new String[]{"Id", "Descrição"});
+            for (Pagamentos pagamento : pagamentos) {
+                model.addRow(new String[]{String.valueOf(pagamento.getId()), pagamento.getDescricao()});
             }
         }
 

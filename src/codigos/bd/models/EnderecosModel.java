@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 /**
  *
@@ -22,7 +23,7 @@ public class EnderecosModel extends Banco {
     public EnderecosModel() {
     }
 
-    public int inserir(Enderecos endereco) throws SQLException {
+    public int inserir(Enderecos endereco) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("INSERT INTO ENDERECOS (CLIENTE_ID, CIDADE_ID, "
                 + "LOGRADOURO, COMPLEMENTO, BAIRRO, CEP, DATA_CADASTRO, ESTADO_ID)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -33,7 +34,7 @@ public class EnderecosModel extends Banco {
         ps.setString(4, endereco.getComplemento());
         ps.setString(5, endereco.getBairro());
         ps.setString(6, endereco.getCep());
-        ps.setDate(7, new Date(System.currentTimeMillis()));
+        ps.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
         ps.setInt(8, endereco.getEstadoId());
 
         if (ps.executeUpdate() > 0) {
@@ -46,7 +47,7 @@ public class EnderecosModel extends Banco {
 
     }
     
-    public int atualizar(Enderecos endereco) throws SQLException {
+    public int atualizar(Enderecos endereco) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("UPDATE ENDERECOS SET CIDADE_ID = ?, "
                 + "LOGRADOURO = ?, COMPLEMENTO = ?, BAIRRO = ?, CEP = ?, ESTADO_ID = ?"
                 + " WHERE ID = ?");
@@ -66,7 +67,7 @@ public class EnderecosModel extends Banco {
 
     }
     
-    public Enderecos byClienteId(int clienteId) throws SQLException{
+    public Enderecos byClienteId(int clienteId) throws SQLException, ClassNotFoundException{
         PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM ENDERECOS WHERE CLIENTE_ID = ?");
         ps.setInt(1, clienteId);
         ResultSet rs = ps.executeQuery();

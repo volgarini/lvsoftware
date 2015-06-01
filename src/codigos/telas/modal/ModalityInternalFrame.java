@@ -10,6 +10,9 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -19,14 +22,16 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.text.MaskFormatter;
 
 /**
- * An extended <code>JInternalFrame</code> that provides modality in a child/parent
- * hierarchy
- * 
+ * An extended <code>JInternalFrame</code> that provides modality in a
+ * child/parent hierarchy
+ *
  * @author webbyit
  */
 public class ModalityInternalFrame extends JInternalFrame {
+
     public static int linha = -1;
     protected JDesktopPane desktopPane;
     protected JComponent parent;
@@ -55,13 +60,13 @@ public class ModalityInternalFrame extends JInternalFrame {
     }
 
     public ModalityInternalFrame(JComponent parent, String title, boolean resizable, boolean closeable,
-                                 boolean maximizable) {
+            boolean maximizable) {
         this(parent, title, resizable, closeable, maximizable, false);
     }
 
     public ModalityInternalFrame(JComponent parent, String title, boolean resizable, boolean closeable,
-                                 boolean maximizable,
-                                 boolean iconifiable) {
+            boolean maximizable,
+            boolean iconifiable) {
         super(title, resizable, closeable, maximizable, iconifiable);
         setParentFrame(parent);
         setFocusTraversalKeysEnabled(false);
@@ -82,8 +87,6 @@ public class ModalityInternalFrame extends JInternalFrame {
         init();
 
         // calculate size and position
-
-
     }
 
     private void setParentFrame(JComponent parent) {
@@ -107,6 +110,52 @@ public class ModalityInternalFrame extends JInternalFrame {
         return (childFrame != null);
     }
 
+    protected MaskFormatter mascara(String formato, boolean placeHolder) {
+        MaskFormatter formatter = null;
+        try {
+            formatter = new MaskFormatter(formato);
+            if (placeHolder) {
+                formatter.setPlaceholderCharacter('_');
+            }
+        } catch (java.text.ParseException exc) {
+            System.err.println(exc.getMessage());
+        }
+        return formatter;
+    }
+
+    protected long date_to_milisec(String pattern, String data) throws ParseException {
+        if (data.trim().isEmpty()) {
+            return 0;
+        }
+        SimpleDateFormat format = new java.text.SimpleDateFormat(pattern);
+        Date date = format.parse(data);
+
+        return date.getTime();
+    }
+
+    protected String limpar_caracteres(String entrada) {
+        return entrada.replaceAll("[\\s()-._/]", "").trim();
+    }
+
+    protected void avisar(String mensagem) {
+        JOptionPane.showMessageDialog(null, mensagem, "Aviso", JOptionPane.INFORMATION_MESSAGE, null);
+    }
+
+    protected int confirmar(String Mensagem) {
+        return JOptionPane.showConfirmDialog(null, Mensagem, "Confirmação", JOptionPane.YES_NO_OPTION);
+    }
+
+    /**
+     * Método que formata data do banco de dados no segunte formato yyyy-MM-dd
+     * para o formato ddMMyyyy
+     *
+     * @param data entrada no formato yyyy-MM-dd
+     * @return retorna data no formato ddMMyyyy
+     */
+    protected static String formataData(String data) {
+        return data.substring(8, 10) + data.substring(5, 7) + data.substring(0, 4);
+    }
+
     protected void addFrameVetoListener() {
         addVetoableChangeListener(new VetoableChangeListener() {
 
@@ -126,8 +175,8 @@ public class ModalityInternalFrame extends JInternalFrame {
     }
 
     /**
-     * Method to control the display of the glasspane, dependant
-     * on the frame being active or not
+     * Method to control the display of the glasspane, dependant on the frame
+     * being active or not
      */
     protected void addFrameListener() {
         addInternalFrameListener(new InternalFrameAdapter() {
@@ -167,8 +216,8 @@ public class ModalityInternalFrame extends JInternalFrame {
     }
 
     /**
-     * Method to handle child frame closing and make this frame
-     * available for user input again with no glasspane visible
+     * Method to handle child frame closing and make this frame available for
+     * user input again with no glasspane visible
      */
     protected void childClosing() {
 //        setClosable(wasCloseable);
@@ -240,7 +289,6 @@ public class ModalityInternalFrame extends JInternalFrame {
         }
 
         //setBounds((rootSize.width - frameSize.width) / 2, (rootSize.height - frameSize.height) / 2, frameSize.width, frameSize.height);
-
         // We want dialog centered relative to its parent component
         int x = (parentSize.width - frameSize.width) / 2 + frameCoord.x;
         int y = (parentSize.height - frameSize.height) / 2 + frameCoord.y;
@@ -254,9 +302,9 @@ public class ModalityInternalFrame extends JInternalFrame {
     }
 
     /**
-     * Glass pane to overlay. Listens for mouse clicks and sets selected
-     * on associated modal frame. Also if modal frame has no children make
-     * class pane invisible
+     * Glass pane to overlay. Listens for mouse clicks and sets selected on
+     * associated modal frame. Also if modal frame has no children make class
+     * pane invisible
      */
     class ModalityInternalGlassPane extends JComponent {
 

@@ -7,11 +7,11 @@ package codigos.bd.models;
 
 import codigos.bd.Banco;
 import codigos.bd.beans.Clientes;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +23,7 @@ public class ClientesModel extends Banco {
     public ClientesModel() {
     }
 
-    public int inserir(Clientes cliente) throws SQLException {
+    public int inserir(Clientes cliente) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("INSERT INTO CLIENTES (NOME, DATA_NASCIMENTO, SEXO, "
                 + "NOME_PAI, CPF_PAI, EMAIL_PAI, FACEBOOK_PAI, TEL_RES_PAI, TEL_CEL_PAI, NOME_MAE, CPF_MAE, EMAIL_MAE, "
                 + "FACEBOOK_MAE, TEL_RES_MAE, TEL_CEL_MAE, DATA_CADASTRO)"
@@ -44,7 +44,7 @@ public class ClientesModel extends Banco {
         ps.setString(13, cliente.getFacebookMae());
         ps.setString(14, cliente.getTelResMae());
         ps.setString(15, cliente.getTelCelMae());
-        ps.setDate(16, new Date(System.currentTimeMillis()));
+        ps.setTimestamp(16, new Timestamp(System.currentTimeMillis()));
 
         if (ps.executeUpdate() > 0) {
             ResultSet rs = ps.getGeneratedKeys();
@@ -56,7 +56,7 @@ public class ClientesModel extends Banco {
 
     }
     
-    public int atualizar(Clientes cliente) throws SQLException {
+    public int atualizar(Clientes cliente) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("UPDATE CLIENTES SET NOME = ?, DATA_NASCIMENTO = ?, SEXO = ?, "
                 + "NOME_PAI = ?, CPF_PAI = ?, EMAIL_PAI = ?, FACEBOOK_PAI = ?, TEL_RES_PAI = ?, TEL_CEL_PAI = ?, NOME_MAE = ?, CPF_MAE = ?, EMAIL_MAE = ?, "
                 + "FACEBOOK_MAE = ?, TEL_RES_MAE = ?, TEL_CEL_MAE = ?"
@@ -86,8 +86,23 @@ public class ClientesModel extends Banco {
 
     }
 
-    public Clientes byNome(String nome) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES WHERE NOME = ?");
+     public int desativar(Clientes cliente) throws SQLException, ClassNotFoundException {
+        PreparedStatement ps = getConnection().prepareStatement("UPDATE CLIENTES "
+                + " SET DATA_EXCLUSAO = ? WHERE ID = ?");
+
+        ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+        ps.setInt(2, cliente.getId());
+
+        if (ps.executeUpdate() > 0) {
+            return cliente.getId();
+        }
+        return 0;
+
+    }
+
+     
+    public Clientes byNome(String nome) throws SQLException, ClassNotFoundException {
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES WHERE NOME = ? AND DATA_EXCLUSAO IS NULL");
         ps.setString(1, nome);
 
         ResultSet rs = ps.executeQuery();
@@ -100,10 +115,10 @@ public class ClientesModel extends Banco {
         return new Clientes(-1);
     }
 
-    public ArrayList<Clientes> likeNome(String nome) throws SQLException {
+    public ArrayList<Clientes> likeNome(String nome) throws SQLException, ClassNotFoundException {
         ArrayList<Clientes> clientes = new ArrayList<>();
 
-        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES WHERE lower(NOME) LIKE lower('%" + nome + "%')");
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES WHERE lower(NOME) LIKE lower('%" + nome + "%') AND DATA_EXCLUSAO IS NULL");
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
@@ -115,10 +130,10 @@ public class ClientesModel extends Banco {
         return clientes;
     }
 
-    public ArrayList<Clientes> getAll() throws SQLException {
+    public ArrayList<Clientes> getAll() throws SQLException, ClassNotFoundException {
         ArrayList<Clientes> clientes = new ArrayList<>();
 
-        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES");
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES WHERE DATA_EXCLUSAO IS NULL");
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
@@ -130,10 +145,10 @@ public class ClientesModel extends Banco {
         return clientes;
     }
 
-    public ArrayList<Clientes> getAllParent(String parent) throws SQLException {
+    public ArrayList<Clientes> getAllParent(String parent) throws SQLException, ClassNotFoundException {
         ArrayList<Clientes> clientes = new ArrayList<>();
 
-        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES WHERE " + parent + " <> '' AND " + parent + " is not null");
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES WHERE (" + parent + " <> '' AND " + parent + " is not null) AND DATA_EXCLUSAO IS NULL");
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
@@ -145,10 +160,10 @@ public class ClientesModel extends Banco {
         return clientes;
     }
     
-     public ArrayList<Clientes> likeParent(String parent, String nome) throws SQLException {
+     public ArrayList<Clientes> likeParent(String parent, String nome) throws SQLException, ClassNotFoundException {
         ArrayList<Clientes> clientes = new ArrayList<>();
 
-        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES WHERE lower(" + parent + ") LIKE lower('%" + nome + "%')");
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM CLIENTES WHERE lower(" + parent + ") LIKE lower('%" + nome + "%') AND DATA_EXCLUSAO IS NULL");
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
