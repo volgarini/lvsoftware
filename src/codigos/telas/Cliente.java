@@ -117,7 +117,6 @@ public class Cliente extends ModalityInternalFrame {
         jTextField10 = new javax.swing.JTextField();
         jComboBox2 = new javax.swing.JComboBox();
         jComboBox3 = new javax.swing.JComboBox();
-        jLabel26 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -397,9 +396,6 @@ public class Cliente extends ModalityInternalFrame {
         });
         jPanel4.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(87, 97, 60, -1));
 
-        jLabel26.setText("<- Falta completar o estado e cidade qdo escolhe alguem ja cadastrado");
-        jPanel4.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 100, 350, -1));
-
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jButton1.setText("Cadastrar");
@@ -451,7 +447,7 @@ public class Cliente extends ModalityInternalFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 750, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -708,7 +704,9 @@ public class Cliente extends ModalityInternalFrame {
         jTextField9.setText("");
         jTextField10.setText("");
         jFormattedTextField8.setText("");
-
+        jComboBox2.setSelectedIndex(0);
+        jComboBox3.setSelectedIndex(0);
+        
         clientes = new Clientes(-1);
         enderecos = new Enderecos(-1);
         linha = -1;
@@ -743,10 +741,24 @@ public class Cliente extends ModalityInternalFrame {
                 //endereco
                 enderecos = enderecosModel.byClienteId(clientes.getId());
                 if (enderecos.getId() > 0) {
+                    System.out.println(enderecos);
                     jTextField8.setText(enderecos.getComplemento());
                     jTextField9.setText(enderecos.getBairro());
                     jTextField10.setText(enderecos.getLogradouro());
                     jFormattedTextField8.setText(enderecos.getCep());
+                    
+                    //verfica a UF e seleciona
+                    for (int i = 0; i < estadosArray.size(); i++) {
+                        if (estadosArray.get(i).getId().intValue() == enderecos.getEstadoId().intValue()) {
+                            jComboBox3.setSelectedIndex(i);
+                            
+                            for(int j = 0; j < cidadesArray.size(); j++){
+                                if (cidadesArray.get(j).getId().intValue() == enderecos.getCidadeId().intValue()) {
+                                    jComboBox2.setSelectedIndex(j);
+                                }
+                            }
+                        }
+                    }
                 }
 
                 jButton1.setText("Atualizar");
@@ -823,7 +835,6 @@ public class Cliente extends ModalityInternalFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

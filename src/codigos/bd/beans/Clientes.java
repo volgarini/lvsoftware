@@ -7,6 +7,7 @@ package codigos.bd.beans;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -31,11 +32,12 @@ public class Clientes implements Serializable {
     private String facebookMae;
     private String telResMae;
     private String telCelMae;
+    private Timestamp dataCadastro;
 
     public Clientes() {
     }
 
-    public Clientes(Integer id, String nome, Date dataNascimento, Character sexo, String nomePai, String cpfPai, String emailPai, String facebookPai, String telResPai, String telCelPai, String nomeMae, String cpfMae, String emailMae, String facebookMae, String telResMae, String telCelMae) {
+    public Clientes(Integer id, String nome, Date dataNascimento, Character sexo, String nomePai, String cpfPai, String emailPai, String facebookPai, String telResPai, String telCelPai, String nomeMae, String cpfMae, String emailMae, String facebookMae, String telResMae, String telCelMae, Timestamp dataCadastro) {
         this.id = id;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
@@ -52,7 +54,10 @@ public class Clientes implements Serializable {
         this.facebookMae = facebookMae;
         this.telResMae = telResMae;
         this.telCelMae = telCelMae;
+        this.dataCadastro = dataCadastro;
     }
+
+    
 
         
 
@@ -188,9 +193,19 @@ public class Clientes implements Serializable {
         this.telCelMae = telCelMae;
     }
 
+    public Timestamp getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Timestamp dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
     @Override
     public String toString() {
-        return "Clientes{" + "id=" + id + ", nome=" + nome + ", dataNascimento=" + dataNascimento + ", sexo=" + sexo + ", nomePai=" + nomePai + ", cpfPai=" + cpfPai + ", emailPai=" + emailPai + ", facebookPai=" + facebookPai + ", telResPai=" + telResPai + ", telCelPai=" + telCelPai + ", nomeMae=" + nomeMae + ", cpfMae=" + cpfMae + ", emailMae=" + emailMae + ", facebookMae=" + facebookMae + ", telResMae=" + telResMae + ", telCelMae=" + telCelMae + '}';
+        return "Clientes{" + "id=" + id + ", nome=" + nome + ", dataNascimento=" + dataNascimento + ", sexo=" + sexo + ", nomePai=" + nomePai + ", cpfPai=" + cpfPai + ", emailPai=" + emailPai + ", facebookPai=" + facebookPai + ", telResPai=" + telResPai + ", telCelPai=" + telCelPai + ", nomeMae=" + nomeMae + ", cpfMae=" + cpfMae + ", emailMae=" + emailMae + ", facebookMae=" + facebookMae + ", telResMae=" + telResMae + ", telCelMae=" + telCelMae + ", dataCadastro=" + dataCadastro + '}';
     }
+
+
 
 }

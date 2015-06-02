@@ -141,6 +141,20 @@ public class ModalityInternalFrame extends JInternalFrame {
         JOptionPane.showMessageDialog(null, mensagem, "Aviso", JOptionPane.INFORMATION_MESSAGE, null);
     }
 
+    protected static String formatar(String pattern, String cpf) {
+        MaskFormatter mask;
+        try {
+            mask = new MaskFormatter(pattern);
+            mask.setValueContainsLiteralCharacters(false);
+            return mask.valueToString(cpf);
+        } catch (ParseException e) {
+
+        }
+
+        return "";
+
+    }
+
     protected int confirmar(String Mensagem) {
         return JOptionPane.showConfirmDialog(null, Mensagem, "Confirmação", JOptionPane.YES_NO_OPTION);
     }

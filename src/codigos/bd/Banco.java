@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  *
@@ -38,10 +39,20 @@ public class Banco {
 
     public Connection getConnection() throws SQLException, ClassNotFoundException {
         if (conn == null || conn.isClosed()) {
-            System.out.println("Conectando....");
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(URL);
-            System.out.println("Conectado ao banco de dados");
+//            System.out.println("Conectando....");
+//            Class.forName(DRIVER);
+//            conn = DriverManager.getConnection(URL);
+//            System.out.println("Conectado ao banco de dados");
+
+            Properties connectionProps = new Properties();
+            connectionProps.put("user", this.usuario);
+            connectionProps.put("password", this.senha);
+            conn = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/"
+                    + this.banco
+                    + ";create=true",
+                    connectionProps);
+            System.out.println("Connected to database");
         }
         return conn;
     }

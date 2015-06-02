@@ -6,6 +6,7 @@
 package codigos.bd.models;
 
 import codigos.bd.Banco;
+import codigos.bd.beans.Cidades;
 import codigos.bd.beans.Estados;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,6 +41,23 @@ public class EstadosModel extends Banco {
         }
 
         return estados;
+    }
+    
+    public Estados byId(int id) throws SQLException, ClassNotFoundException {
+        PreparedStatement ps;
+        Estados estado = new Estados(-1);
+        ps = getConnection().prepareStatement("SELECT * FROM ESTADOS WHERE ID = ?");
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            estado.setId(rs.getInt("ID"));
+            estado.setNome(rs.getString("NOME"));
+            estado.setSigla(rs.getString("SIGLA"));
+        }
+        
+        return estado;
+
     }
 
     public int inserir(Estados estado) throws SQLException, ClassNotFoundException {
