@@ -25,10 +25,6 @@
     <field name="cep" class="java.lang.String"/>
     <field name="cidade" class="java.lang.String"/>
     <field name="uf" class="java.lang.String"/>
-    <group name="Group1"/>
-    <group name="Group2"/>
-    <group name="Group3"/>
-    <group name="Group4"/>
     <background>
         <band/>
     </background>
