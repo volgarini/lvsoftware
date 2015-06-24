@@ -23,11 +23,13 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -43,11 +45,13 @@ public class Venda extends Relatorio {
 
     private ArrayList<Clientes> clientesArray;
     private ArrayList<Produtos> produtosArray;
-    private final ArrayList<Produtos> produtosVendas;
+    private final ArrayList<VendasProduto> produtosVendas;
     private ArrayList<Pagamentos> ptosArray;
 
     private Clientes clientes;
-    private final DefaultListModel listModel;
+//    private final DefaultListModel listModel;
+
+    private DefaultTableModel tableModel;
 
     /**
      * Creates new form Venda
@@ -65,10 +69,11 @@ public class Venda extends Relatorio {
         produtosVendas = new ArrayList<>();
         ptosArray = new ArrayList<>();
 
-        listModel = new DefaultListModel();
-
+//        listModel = new DefaultListModel();
         clientes = new Clientes(-1);
         initComponents();
+
+        tableModel = (DefaultTableModel) jTable1.getModel();
     }
 
     /**
@@ -89,8 +94,6 @@ public class Venda extends Relatorio {
         jComboBox1 = new javax.swing.JComboBox();
         jLabel9 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jNumericField2 = new codigos.telas.campos.JNumericField();
@@ -98,6 +101,8 @@ public class Venda extends Relatorio {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -159,10 +164,6 @@ public class Venda extends Relatorio {
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
         jSpinner1.setValue(1);
 
-        jList1.setModel(listModel);
-        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(jList1);
-
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icone_remover.png")));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,6 +201,24 @@ public class Venda extends Relatorio {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Observação");
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Descrição", "Quantidade", "Valor"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable1);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -209,10 +228,6 @@ public class Venda extends Relatorio {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -233,7 +248,11 @@ public class Venda extends Relatorio {
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -262,15 +281,15 @@ public class Venda extends Relatorio {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(78, 78, 78)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -395,43 +414,50 @@ public class Venda extends Relatorio {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Produtos produtos = produtosArray.get(jComboBox1.getSelectedIndex());
-        float valor = jNumericField2.getFloat();
-        int quantidade = Integer.valueOf(jSpinner1.getValue().toString());
-        float valorTotal = Float.valueOf(jFormattedTextField2.getText().replace(',', '.'));
-        float desconto = jNumericField1.getFloat();
-
-        for (int i = 0; i < quantidade; i++) {
-            Produtos clone = new Produtos(produtos.getId(), produtos.getDescricao(), produtos.getCodigoBarras(), valor, produtos.getQuantidade());
-            listModel.addElement(clone.toString() + " - R$ " + clone.getValor());
-            produtosVendas.add(clone);
-            valorTotal += clone.getValor();
+        int confirmar = 0;
+        if (produtos.getTipo().compareToIgnoreCase("P") == 0 && produtos.getQuantidade() <= 0) {
+            confirmar = confirmar("Você está com estoque zerado do produto: " + produtos.getDescricao() + ". Deseja continuar?");
         }
 
-        float valorFinal = valorTotal - desconto;
-        jFormattedTextField2.setText(String.format("%.2f", valorTotal));
-        jFormattedTextField3.setText(String.format("%.2f", valorFinal < 0 ? 0 : valorFinal));
-        jList1.setSelectedIndex(0);
-        jList1.requestFocus();
+        if (confirmar == 0) {
+            float valor = jNumericField2.getFloat();
+            int quantidade = Integer.valueOf(jSpinner1.getValue().toString());
+            float valorTotal = Float.valueOf(jFormattedTextField2.getText().replace(',', '.'));
+            float desconto = jNumericField1.getFloat();
+
+            VendasProduto vendasProduto = new VendasProduto(produtos.getId(), produtos.getDescricao(), String.valueOf(quantidade), String.valueOf(valor));
+
+            tableModel.addRow(new String[]{vendasProduto.getDescricao(), vendasProduto.getQuantidade(), "R$ " + String.format("%.2f", valor)});
+//        listModel.addElement(descricao + vendasProduto.getQuantidade() + "    X    R$ " + vendasProduto.getValor());
+            produtosVendas.add(vendasProduto);
+            valorTotal += valor * quantidade;
+
+            float valorFinal = valorTotal - desconto;
+            jFormattedTextField2.setText(String.format("%.2f", valorTotal));
+            jFormattedTextField3.setText(String.format("%.2f", valorFinal < 0 ? 0 : valorFinal));
+        }
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int index = jList1.getSelectedIndex();
+        int index = jTable1.getSelectedRow(); //jList1.getSelectedIndex();
 
         if (index > -1) {
             float valor = Float.valueOf(jFormattedTextField2.getText().replace(',', '.'));
             float desconto = jNumericField1.getFloat();
 
-            listModel.remove(index);
-            Produtos produtos = produtosVendas.get(index);
+            tableModel.removeRow(index);
+            VendasProduto produtos = produtosVendas.get(index);
             produtosVendas.remove(index);
-            valor -= produtos.getValor();
+            valor -= (Float.valueOf(produtos.getQuantidade()) * Float.valueOf(produtos.getValor()));
 
             float valorFinal = valor - desconto;
             jFormattedTextField2.setText(String.format("%.2f", valor));
             jFormattedTextField3.setText(String.format("%.2f", valorFinal < 0 ? 0 : valorFinal));
 
-            jList1.setSelectedIndex(0);
-            jList1.requestFocus();
+            if (produtosVendas.size() > 0) {
+                jTable1.setRowSelectionInterval(0, 0);
+            }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -458,23 +484,25 @@ public class Venda extends Relatorio {
 
                     System.out.println(venda.toString());
 
-                    int id = 1;//vendasModel.inserir(venda);
+                    int id = vendasModel.inserir(venda);
 
                     if (id > 0) {
-                        
+
                         ArrayList<String> descricao = new ArrayList<>();
+                        ArrayList<String> quantidade = new ArrayList<>();
                         ArrayList<String> valor = new ArrayList<>();
 
-//                        ArrayList<VendasProduto> vp = new ArrayList<>();
-                        
-                        for (Produtos produto : produtosVendas) {
-                            VendasHasProdutos vhp = new VendasHasProdutos(null, produto.getId(), id, produto.getValor());
-                            //vendasHasProdutosModel.inserir(vhp);
+                        for (VendasProduto produto : produtosVendas) {
+                            //insere os produtos
+                            int qtd = Integer.valueOf(produto.getQuantidade());
+                            VendasHasProdutos vhp = new VendasHasProdutos(null, produto.getId(), id, Float.valueOf(produto.getValor()), qtd);
+                            vendasHasProdutosModel.inserir(vhp);
 
-//                            vp.add(new VendasProduto(produto.getDescricao(), "", "R$ " + String.format("%.2f", produto.getValor())));
                             descricao.add(produto.getDescricao());
-                            valor.add("R$ " + String.format("%.2f", produto.getValor()));
+                            quantidade.add(produto.getQuantidade());
+                            valor.add("R$ " + String.format("%.2f", Float.valueOf(produto.getValor())));
 
+                            produtosModel.atualizarQuantidade(produto.getId(), qtd);
                         }
 
                         if (confirmar("Venda concluída com sucesso. Deseja emitir o recibo?") == 0) {
@@ -483,15 +511,16 @@ public class Venda extends Relatorio {
 
                             relatorio.setNome(venda.getCliente());
                             relatorio.setDescricoes(descricao);
+                            relatorio.setQuantidades(quantidade);
                             relatorio.setValores(valor);
 //                            relatorio.setProdutos(vp);
                             relatorio.setValorTotal("R$ " + String.format("%.2f", venda.getValorTotal()));
                             relatorio.setDesconto("-R$ " + String.format("%.2f", venda.getDesconto()));
                             relatorio.setValorFinal("R$ " + String.format("%.2f", venda.getValorFinal()));
                             relatorio.setObservacao(venda.getObservacao());
-                            
+
                             dados.add(relatorio);
-                            String nome = "cliente";
+                            String nome = venda.getCliente().replaceAll(" ", "") + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
                             emitirRelatorio(dados, "relatorios/pdf/" + nome + ".pdf", "relatorios/RelatorioVenda.jrxml");
 
                             File myFile = new File("relatorios/pdf/" + nome + ".pdf");
@@ -500,6 +529,10 @@ public class Venda extends Relatorio {
                     }
 
                 } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -630,14 +663,14 @@ public class Venda extends Relatorio {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList jList1;
     private codigos.telas.campos.JNumericField jNumericField1;
     private codigos.telas.campos.JNumericField jNumericField2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables

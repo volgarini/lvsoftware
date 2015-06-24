@@ -24,12 +24,13 @@ public class VendasHasProdutosModel extends Banco {
 
     public int inserir(VendasHasProdutos vendas) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("INSERT INTO VENDAS_HAS_PRODUTOS "
-                + "(PRODUTO_ID, VENDA_ID, VALOR)"
-                + " VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                + "(PRODUTO_ID, VENDA_ID, VALOR, QUANTIDADE)"
+                + " VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
         ps.setInt(1, vendas.getProdutoId());
         ps.setInt(2, vendas.getVendaId());
         ps.setFloat(3, vendas.getValor());
+        ps.setInt(4, vendas.getQuantidade());
 
         if (ps.executeUpdate() > 0) {
             ResultSet rs = ps.getGeneratedKeys();
@@ -49,7 +50,7 @@ public class VendasHasProdutosModel extends Banco {
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
-            produtosArray.add(new VendasHasProdutos(rs.getInt("ID"),rs.getInt("PRODUTO_ID"), rs.getInt("VENDA_ID"), rs.getFloat("VALOR")));
+            produtosArray.add(new VendasHasProdutos(rs.getInt("ID"),rs.getInt("PRODUTO_ID"), rs.getInt("VENDA_ID"), rs.getFloat("VALOR"), rs.getInt("QUANTIDADE")));
         }
 
         return produtosArray;

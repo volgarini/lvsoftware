@@ -13,6 +13,7 @@ import java.io.Serializable;
  */
 public class VendasProduto implements Serializable {
 
+    private Integer id;
     private String descricao;
     private String quantidade;
     private String valor;
@@ -22,11 +23,22 @@ public class VendasProduto implements Serializable {
     public VendasProduto() {
     }
 
-    public VendasProduto(String descricao, String quantidade, String valor) {
+    public VendasProduto(Integer id, String descricao, String quantidade, String valor) {
+        this.id = id;
         this.descricao = descricao;
         this.quantidade = quantidade;
         this.valor = valor;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+   
 
     public String getDescricao() {
         return descricao;

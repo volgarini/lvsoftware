@@ -19,7 +19,8 @@ public class Produtos implements Serializable {
     private String codigoBarras;
     private float valor;
     private Integer quantidade;
-
+    private String tipo;
+    
     public Produtos() {
     }
 
@@ -28,13 +29,16 @@ public class Produtos implements Serializable {
         
     }
 
-    public Produtos(Integer id, String descricao, String codigoBarras, float valor, Integer quantidade) {
+    public Produtos(Integer id, String descricao, String codigoBarras, float valor, Integer quantidade, String tipo) {
         this.id = id;
         this.descricao = descricao;
         this.codigoBarras = codigoBarras;
         this.valor = valor;
         this.quantidade = quantidade;
+        this.tipo = tipo;
     }
+
+
 
     
     public Integer getId() {
@@ -75,6 +79,14 @@ public class Produtos implements Serializable {
 
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @Override

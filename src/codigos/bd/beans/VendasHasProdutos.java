@@ -19,7 +19,8 @@ public class VendasHasProdutos implements Serializable {
     private Integer produtoId;
     private Integer vendaId;
     private float valor;
-
+    private Integer quantidade;
+    
     public VendasHasProdutos() {
     }
 
@@ -27,12 +28,15 @@ public class VendasHasProdutos implements Serializable {
         this.id = id;
     }
 
-    public VendasHasProdutos(Integer id, Integer produtoId, Integer vendaId, float valor) {
+    public VendasHasProdutos(Integer id, Integer produtoId, Integer vendaId, float valor, Integer quantidade) {
         this.id = id;
         this.produtoId = produtoId;
         this.vendaId = vendaId;
         this.valor = valor;
+        this.quantidade = quantidade;
     }
+
+
 
 
 
@@ -66,6 +70,14 @@ public class VendasHasProdutos implements Serializable {
 
     public void setVendaId(Integer vendaId) {
         this.vendaId = vendaId;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 
 }
