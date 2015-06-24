@@ -17,7 +17,6 @@ import codigos.telas.modal.ModalityInternalFrame;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,8 +70,9 @@ public class Cliente extends ModalityInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField(super.mascara("##/##/####", true));
         jButton2 = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jFormattedTextField = new javax.swing.JFormattedTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -138,7 +138,7 @@ public class Cliente extends ModalityInternalFrame {
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Nome:");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 51, -1));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 40, 51, -1));
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -163,16 +163,7 @@ public class Cliente extends ModalityInternalFrame {
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Data de Nascimento:");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 64, -1, -1));
-
-        jFormattedTextField1.setColumns(10);
-        jFormattedTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextField1ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jFormattedTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 64, 90, -1));
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 69, -1, -1));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisa_pessoa.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -181,6 +172,11 @@ public class Cliente extends ModalityInternalFrame {
             }
         });
         jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(475, 36, 40, 30));
+        jPanel2.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 120, -1));
+
+        jFormattedTextField.setVisible(false);
+        jFormattedTextField.setText("jFormattedTextField1");
+        jPanel2.add(jFormattedTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, -1, -1));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setPreferredSize(new java.awt.Dimension(645, 80));
@@ -207,7 +203,7 @@ public class Cliente extends ModalityInternalFrame {
         jLabel9.setText("CPF:");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 42, -1, 21));
 
-        jFormattedTextField1.setColumns(10);
+        jFormattedTextField.setColumns(10);
         jFormattedTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel1.add(jFormattedTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 42, 103, -1));
 
@@ -234,7 +230,7 @@ public class Cliente extends ModalityInternalFrame {
         jLabel12.setText("Tel. Res.:");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 97, -1, 21));
 
-        jFormattedTextField1.setColumns(14);
+        jFormattedTextField.setColumns(14);
         jFormattedTextField3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel1.add(jFormattedTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 97, 140, -1));
 
@@ -242,7 +238,7 @@ public class Cliente extends ModalityInternalFrame {
         jLabel13.setText("Celular:");
         jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 97, -1, 21));
 
-        jFormattedTextField1.setColumns(15);
+        jFormattedTextField.setColumns(15);
         jFormattedTextField4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel1.add(jFormattedTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 97, 140, -1));
 
@@ -274,7 +270,7 @@ public class Cliente extends ModalityInternalFrame {
         jLabel15.setText("CPF:");
         jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 42, -1, 21));
 
-        jFormattedTextField1.setColumns(10);
+        jFormattedTextField.setColumns(10);
         jFormattedTextField5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jFormattedTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -306,7 +302,7 @@ public class Cliente extends ModalityInternalFrame {
         jLabel18.setText("Tel. Res.:");
         jPanel3.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 97, -1, 21));
 
-        jFormattedTextField1.setColumns(14);
+        jFormattedTextField.setColumns(14);
         jFormattedTextField6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel3.add(jFormattedTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 97, 140, -1));
 
@@ -314,7 +310,7 @@ public class Cliente extends ModalityInternalFrame {
         jLabel19.setText("Celular:");
         jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 97, -1, 21));
 
-        jFormattedTextField1.setColumns(15);
+        jFormattedTextField.setColumns(15);
         jFormattedTextField7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jFormattedTextField7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -375,7 +371,7 @@ public class Cliente extends ModalityInternalFrame {
         jLabel25.setText("Cidade:");
         jPanel4.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(151, 97, -1, 21));
 
-        jFormattedTextField1.setColumns(9);
+        jFormattedTextField.setColumns(9);
         jFormattedTextField8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel4.add(jFormattedTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 69, 87, -1));
 
@@ -473,7 +469,7 @@ public class Cliente extends ModalityInternalFrame {
             //dados do filho
             clientes.setNome(jTextField1.getText().trim());
 
-            clientes.setDataNascimento(new Date(super.date_to_milisec("dd/MM/yyyy", jFormattedTextField1.getText())));
+            clientes.setDataNascimento(new Date(jDateChooser1.getDate().getTime()));
             clientes.setSexo(jComboBox1.getSelectedIndex() == 0 ? 'M' : 'F');
 
             //dados do pai
@@ -523,10 +519,7 @@ public class Cliente extends ModalityInternalFrame {
                 }
             }
 
-        } catch (ParseException ex) {
-            super.avisar("Entre com uma data válida!");
-            ex.printStackTrace();
-        } catch (SQLException ex) {
+        }  catch (SQLException ex) {
             ex.printStackTrace();
             super.avisar("Ocorreu um erro no banco de dados!");
         } catch (ClassNotFoundException ex) {
@@ -583,10 +576,6 @@ public class Cliente extends ModalityInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         tabelaBusca();
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
@@ -680,7 +669,7 @@ public class Cliente extends ModalityInternalFrame {
 
     private void limparCampos() {
         jTextField1.setText("");
-        jFormattedTextField1.setText("");
+        jDateChooser1.setDate(null);
         jComboBox1.setSelectedIndex(0);
 
         //pai
@@ -719,7 +708,8 @@ public class Cliente extends ModalityInternalFrame {
             try {
                 clientes = clientesArray.get(linha);
                 jTextField1.setText(clientes.getNome());
-                jFormattedTextField1.setText(super.formataData(clientes.getDataNascimento().toString()));
+                jDateChooser1.setDate(clientes.getDataNascimento());
+//                jFormattedTextField1.setText(super.formataData(clientes.getDataNascimento().toString()));
                 jComboBox1.setSelectedIndex(clientes.getSexo() == 'M' ? 0 : 1);
 
                 //pai
@@ -809,7 +799,8 @@ public class Cliente extends ModalityInternalFrame {
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JFormattedTextField jFormattedTextField;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JFormattedTextField jFormattedTextField3;
     private javax.swing.JFormattedTextField jFormattedTextField4;

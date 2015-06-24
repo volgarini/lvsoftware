@@ -14,6 +14,7 @@ import codigos.telas.Cliente;
 import codigos.telas.Pagamento;
 import codigos.telas.Produto;
 import codigos.telas.RelatorioClientes;
+import codigos.telas.RelatorioVendas;
 import codigos.telas.Venda;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -33,7 +34,6 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-
     }
 
     /**
@@ -236,6 +236,7 @@ public class Main extends javax.swing.JFrame {
                 id = em.inserir(new Estados(null, "Minas Gerais", "MG"));
                 cm.inserir(new Cidades(null, id, "Belo Horizonte"));
 
+                JOptionPane.showMessageDialog(null, "Banco de Dados criado com sucesso!", "Aviso", JOptionPane.INFORMATION_MESSAGE, null);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
@@ -245,7 +246,16 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-
+        try {
+            RelatorioVendas vendas = new RelatorioVendas(jDesktopPane1);
+            jDesktopPane1.add(vendas);
+            
+            vendas.show();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
 
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
@@ -253,14 +263,14 @@ public class Main extends javax.swing.JFrame {
         try {
             RelatorioClientes relatorio = new RelatorioClientes(jDesktopPane1);
             jDesktopPane1.add(relatorio);
-            
+
             relatorio.show();
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**

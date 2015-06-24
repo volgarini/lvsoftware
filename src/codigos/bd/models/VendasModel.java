@@ -7,12 +7,14 @@ package codigos.bd.models;
 
 import codigos.bd.Banco;
 import codigos.bd.beans.Vendas;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.ArrayList;
 
 /**
  *
@@ -36,11 +38,12 @@ public class VendasModel extends Banco {
         ps.setInt(2, vendas.getPagamentoId());
         ps.setFloat(3, vendas.getValorTotal());
         ps.setFloat(4, vendas.getDesconto());
+        System.out.println(vendas.getValorFinal());
         ps.setFloat(5, vendas.getValorFinal());
         ps.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
         ps.setString(7, vendas.getCliente());
         ps.setString(8, vendas.getObservacao());
-        
+
         if (ps.executeUpdate() > 0) {
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
@@ -49,6 +52,36 @@ public class VendasModel extends Banco {
         }
         return -1;
 
+    }
+
+    public ArrayList<Vendas> filtrar(Date dataI, Date dataF, int cliente) throws SQLException, ClassNotFoundException {
+        ArrayList<Vendas> vendas = new ArrayList<>();
+        PreparedStatement ps = null;
+        String query = "select * from ROOT.VENDAS ";
+        
+        String complemento = " WHERE ";
+        if (dataI != null && dataF != null) {
+            query += "where (date(DATA_CADASTRO) between '" + dataI + "' and '" + dataF + "') ";
+            complemento = " AND";
+        } else if (dataI != null) {
+            query += "where (date(DATA_CADASTRO) >= '" + dataI + "') ";
+            complemento = " AND";
+        } else if (dataF != null) {
+            query += "where (date(DATA_CADASTRO) <= '" + dataF + "') ";
+            complemento = " AND";
+        }
+
+        if (cliente > 0) {
+            query += complemento + " CLIENTE_ID = " + cliente;
+        }
+        System.out.println(query);
+        ps = getConnection().prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        
+        while(rs.next()){
+            vendas.add(new Vendas(rs.getInt("ID"), rs.getInt("CLIENTE_ID"), rs.getInt("PAGAMENTO_ID"), rs.getDate("DATA_CADASTRO"), rs.getFloat("VALOR_TOTAL"), rs.getFloat("DESCONTO"), rs.getFloat("VALOR_FINAL"), rs.getString("CLIENTE"), rs.getString("OBSERVACAO")));
+        }
+        return vendas;
     }
 
     public int atualizar(Vendas pagamentos) throws SQLException {

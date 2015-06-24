@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -38,5 +39,19 @@ public class VendasHasProdutosModel extends Banco {
         }
         return -1;
 
+    }
+
+    public ArrayList<VendasHasProdutos> byVendasId(int vendasId) throws SQLException, ClassNotFoundException {
+        ArrayList<VendasHasProdutos> produtosArray = new ArrayList<>();
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM VENDAS_HAS_PRODUTOS WHERE VENDA_ID = ?");
+
+        ps.setInt(1, vendasId);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            produtosArray.add(new VendasHasProdutos(rs.getInt("ID"),rs.getInt("PRODUTO_ID"), rs.getInt("VENDA_ID"), rs.getFloat("VALOR")));
+        }
+
+        return produtosArray;
     }
 }

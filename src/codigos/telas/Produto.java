@@ -13,8 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -57,7 +55,7 @@ public class Produto extends ModalityInternalFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
+        jNumericField1 = new codigos.telas.campos.JNumericField();
         jPanel2 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -114,8 +112,15 @@ public class Produto extends ModalityInternalFrame {
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setText("Valor R$:");
 
-        jSpinner2.setModel(new SpinnerNumberModel(0,0,1000,0.2));
-        jSpinner2.setEditor(new JSpinner.NumberEditor(jSpinner2,"##.#"));
+        jNumericField1.setMaxLength(10); //Set maximum length
+        jNumericField1.setPrecision(2); //Set precision (1 in your case)
+        jNumericField1.setAllowNegative(false); //Set false to disable negatives
+        jNumericField1.setText("0.00");
+        jNumericField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jNumericField1FocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -139,8 +144,8 @@ public class Produto extends ModalityInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jNumericField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -165,8 +170,8 @@ public class Produto extends ModalityInternalFrame {
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jNumericField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -239,7 +244,7 @@ public class Produto extends ModalityInternalFrame {
         try {
             produto.setDescricao(jTextField1.getText().trim());
             produto.setCodigoBarras(jTextField2.getText().trim());
-            produto.setValor(Float.valueOf(jSpinner2.getValue().toString()));
+            produto.setValor(Float.valueOf(jNumericField1.getText()));
             produto.setQuantidade((Integer) jSpinner1.getValue());
 
             if (validarProduto()) {
@@ -302,6 +307,9 @@ public class Produto extends ModalityInternalFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jNumericField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jNumericField1FocusLost
+    }//GEN-LAST:event_jNumericField1FocusLost
+
     private void tabelaBusca() {
         String descricao = jTextField1.getText().trim();
         try {
@@ -348,7 +356,7 @@ public class Produto extends ModalityInternalFrame {
         jTextField1.setText("");
         jTextField2.setText("");
         jSpinner1.setValue(0);
-        jSpinner2.setValue(0);
+        jNumericField1.setText("0.00");
 
         produto.setId(-1);
         linha = -1;
@@ -361,7 +369,7 @@ public class Produto extends ModalityInternalFrame {
             produto = produtosArray.get(linha);
             jTextField1.setText(produto.getDescricao());
             jTextField2.setText(produto.getCodigoBarras());
-            jSpinner2.setValue(produto.getValor());
+            jNumericField1.setFloat(produto.getValor());
             jSpinner1.setValue(produto.getQuantidade());
 
             jButton1.setText("Atualizar");
@@ -387,10 +395,10 @@ public class Produto extends ModalityInternalFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private codigos.telas.campos.JNumericField jNumericField1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables

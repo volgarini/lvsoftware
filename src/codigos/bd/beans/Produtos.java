@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Lucas
  */
-public class Produtos implements Serializable, Cloneable {
+public class Produtos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -25,6 +25,7 @@ public class Produtos implements Serializable, Cloneable {
 
     public Produtos(Integer id) {
         this.id = id;
+        
     }
 
     public Produtos(Integer id, String descricao, String codigoBarras, float valor, Integer quantidade) {

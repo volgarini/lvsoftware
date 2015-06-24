@@ -15,8 +15,13 @@ import codigos.bd.models.PagamentosModel;
 import codigos.bd.models.ProdutosModel;
 import codigos.bd.models.VendasHasProdutosModel;
 import codigos.bd.models.VendasModel;
-import codigos.telas.modal.ModalityInternalFrame;
+import codigos.telas.relatorio.Relatorio;
+import codigos.telas.relatorio.VendasProduto;
+import codigos.telas.relatorio.VendasRelatorio;
+import java.awt.Desktop;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
@@ -28,7 +33,7 @@ import javax.swing.JOptionPane;
  *
  * @author Lucas
  */
-public class Venda extends ModalityInternalFrame {
+public class Venda extends Relatorio {
 
     private final PagamentosModel pagamentosModel;
     private final ProdutosModel produtosModel;
@@ -48,7 +53,7 @@ public class Venda extends ModalityInternalFrame {
      * Creates new form Venda
      */
     public Venda(JDesktopPane main) {
-        super(main, "Venda", false, true);
+        super(main, "Venda");
         pagamentosModel = new PagamentosModel();
         produtosModel = new ProdutosModel();
         clientesModel = new ClientesModel();
@@ -199,13 +204,13 @@ public class Venda extends ModalityInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1))
+                        .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -227,10 +232,9 @@ public class Venda extends ModalityInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -445,30 +449,61 @@ public class Venda extends ModalityInternalFrame {
 
                     venda.setClienteId(clientes.getId() == -1 ? null : clientes.getId());
                     venda.setCliente(jTextField1.getText().trim());
+
                     venda.setObservacao(jTextArea1.getText().trim());
                     venda.setPagamentoId(ptosArray.get(jComboBox2.getSelectedIndex()).getId());
                     venda.setDesconto(jNumericField1.getFloat());
                     venda.setValorTotal(valorTotal);
                     venda.setValorFinal(valorFinal);
 
-                    int id = vendasModel.inserir(venda);
+                    System.out.println(venda.toString());
+
+                    int id = 1;//vendasModel.inserir(venda);
 
                     if (id > 0) {
+                        
+                        ArrayList<String> descricao = new ArrayList<>();
+                        ArrayList<String> valor = new ArrayList<>();
+
+//                        ArrayList<VendasProduto> vp = new ArrayList<>();
+                        
                         for (Produtos produto : produtosVendas) {
                             VendasHasProdutos vhp = new VendasHasProdutos(null, produto.getId(), id, produto.getValor());
-                            
-                            vendasHasProdutosModel.inserir(vhp);
+                            //vendasHasProdutosModel.inserir(vhp);
+
+//                            vp.add(new VendasProduto(produto.getDescricao(), "", "R$ " + String.format("%.2f", produto.getValor())));
+                            descricao.add(produto.getDescricao());
+                            valor.add("R$ " + String.format("%.2f", produto.getValor()));
+
                         }
-                        
-                        avisar("Venda concluída com sucesso!");
+
+                        if (confirmar("Venda concluída com sucesso. Deseja emitir o recibo?") == 0) {
+                            ArrayList<VendasRelatorio> dados = new ArrayList<>();
+                            VendasRelatorio relatorio = new VendasRelatorio();
+
+                            relatorio.setNome(venda.getCliente());
+                            relatorio.setDescricoes(descricao);
+                            relatorio.setValores(valor);
+//                            relatorio.setProdutos(vp);
+                            relatorio.setValorTotal("R$ " + String.format("%.2f", venda.getValorTotal()));
+                            relatorio.setDesconto("-R$ " + String.format("%.2f", venda.getDesconto()));
+                            relatorio.setValorFinal("R$ " + String.format("%.2f", venda.getValorFinal()));
+                            relatorio.setObservacao(venda.getObservacao());
+                            
+                            dados.add(relatorio);
+                            String nome = "cliente";
+                            emitirRelatorio(dados, "relatorios/pdf/" + nome + ".pdf", "relatorios/RelatorioVenda.jrxml");
+
+                            File myFile = new File("relatorios/pdf/" + nome + ".pdf");
+                            Desktop.getDesktop().open(myFile);
+                        }
                     }
 
-                } catch (SQLException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
-                } catch (ClassNotFoundException ex) {
                 }
             }
-        }else{
+        } else {
             avisar("Insira pelo menos 1 produto ou serviço para realizar a venda!");
         }
     }//GEN-LAST:event_jButton1ActionPerformed

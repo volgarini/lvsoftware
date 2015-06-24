@@ -6,7 +6,9 @@
 package codigos.telas.relatorio;
 
 import codigos.telas.modal.ModalityInternalFrame;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JDesktopPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -29,12 +31,12 @@ public class Relatorio extends ModalityInternalFrame {
 
     protected void emitirRelatorio(List dados, String arquivo, String relatorio) {
         try {
-
+            Map<String, Object> params = new HashMap<String, Object>();
             // compilacao do JRXML
             JasperReport report = JasperCompileManager
                     .compileReport(relatorio);
 
-            JasperPrint print = JasperFillManager.fillReport(report, null,
+            JasperPrint print = JasperFillManager.fillReport(report, params,
                     new JRBeanCollectionDataSource(dados));
 
             // exportacao do relatorio para outro formato, no caso PDF

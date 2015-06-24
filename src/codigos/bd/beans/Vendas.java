@@ -118,4 +118,10 @@ public class Vendas implements Serializable {
         this.observacao = observacao;
     }
 
+    @Override
+    public String toString() {
+        return "Vendas{" + "id=" + id + ", clienteId=" + clienteId + ", pagamentoId=" + pagamentoId + ", dataCadastro=" + dataCadastro + ", valorTotal=" + valorTotal + ", desconto=" + desconto + ", valorFinal=" + valorFinal + ", cliente=" + cliente + ", observacao=" + observacao + '}';
+    }
+
+    
 }
