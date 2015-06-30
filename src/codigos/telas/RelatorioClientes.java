@@ -15,6 +15,9 @@ import codigos.bd.models.ClientesModel;
 import codigos.bd.models.EnderecosModel;
 import codigos.bd.models.EstadosModel;
 import codigos.telas.relatorio.ClientesRelatorio;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
@@ -132,71 +135,80 @@ public class RelatorioClientes extends Relatorio {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        if (fileChooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            int index = jComboBox1.getSelectedIndex();
-            String arquivo = fileChooser.getSelectedFile().getPath() + ".pdf";
+        if (clientesArray.size() > 0) {
 
-            String relatorio = "";
+            JFileChooser fileChooser = new JFileChooser();
+            if (fileChooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
+                int index = jComboBox1.getSelectedIndex();
+                String arquivo = fileChooser.getSelectedFile().getPath() + ".pdf";
 
-            ArrayList<Clientes> dados = null;
+                String relatorio = "";
 
-            if (index == 0) {
-                dados = clientesArray;
-                relatorio = "relatorios/RelatorioClientes.jrxml";
-            } else {
-                dados = new ArrayList<>();
+                ArrayList<Clientes> dados = null;
 
-                index = jComboBox2.getSelectedIndex();
+                if (index == 0) {
+                    dados = clientesArray;
+                    relatorio = "relatorios/RelatorioClientes.jrxml";
+                } else {
+                    dados = new ArrayList<>();
 
-                ClientesRelatorio clientes = new ClientesRelatorio();
-                clientes.setId(clientesArray.get(index).getId());
+                    index = jComboBox2.getSelectedIndex();
 
-                clientes.setNome(clientesArray.get(index).getNome());
-                clientes.setDataNascimento(clientesArray.get(index).getDataNascimento());
-                clientes.setDataCadastro(clientesArray.get(index).getDataCadastro());
-                clientes.setSexo(clientesArray.get(index).getSexo());
+                    ClientesRelatorio clientes = new ClientesRelatorio();
+                    clientes.setId(clientesArray.get(index).getId());
 
-                clientes.setNomePai(clientesArray.get(index).getNomePai());
-                clientes.setEmailPai(clientesArray.get(index).getEmailPai());
-                clientes.setFacebookPai(clientesArray.get(index).getFacebookPai());
-                clientes.setCpfPai(formatar("###.###.###-##", clientesArray.get(index).getCpfPai()));
-                clientes.setTelResPai(formatar("(##) ####-####", clientesArray.get(index).getTelResPai()));
-                clientes.setTelCelPai(formatar("(##) #####-####", clientesArray.get(index).getTelCelPai()));
+                    clientes.setNome(clientesArray.get(index).getNome());
+                    clientes.setDataNascimento(clientesArray.get(index).getDataNascimento());
+                    clientes.setDataCadastro(clientesArray.get(index).getDataCadastro());
+                    clientes.setSexo(clientesArray.get(index).getSexo());
 
-                clientes.setNomeMae(clientesArray.get(index).getNomeMae());
-                clientes.setEmailMae(clientesArray.get(index).getEmailMae());
-                clientes.setFacebookMae(clientesArray.get(index).getFacebookMae());
-                clientes.setCpfMae(formatar("###.###.###-##", clientesArray.get(index).getCpfMae()));
-                clientes.setTelResMae(formatar("(##) ####-####", clientesArray.get(index).getTelResMae()));
-                clientes.setTelCelMae(formatar("(##) #####-####", clientesArray.get(index).getTelCelMae()));
+                    clientes.setNomePai(clientesArray.get(index).getNomePai());
+                    clientes.setEmailPai(clientesArray.get(index).getEmailPai());
+                    clientes.setFacebookPai(clientesArray.get(index).getFacebookPai());
+                    clientes.setCpfPai(formatar("###.###.###-##", clientesArray.get(index).getCpfPai()));
+                    clientes.setTelResPai(formatar("(##) ####-####", clientesArray.get(index).getTelResPai()));
+                    clientes.setTelCelPai(formatar("(##) #####-####", clientesArray.get(index).getTelCelPai()));
 
-                EnderecosModel em = new EnderecosModel();
+                    clientes.setNomeMae(clientesArray.get(index).getNomeMae());
+                    clientes.setEmailMae(clientesArray.get(index).getEmailMae());
+                    clientes.setFacebookMae(clientesArray.get(index).getFacebookMae());
+                    clientes.setCpfMae(formatar("###.###.###-##", clientesArray.get(index).getCpfMae()));
+                    clientes.setTelResMae(formatar("(##) ####-####", clientesArray.get(index).getTelResMae()));
+                    clientes.setTelCelMae(formatar("(##) #####-####", clientesArray.get(index).getTelCelMae()));
 
+                    EnderecosModel em = new EnderecosModel();
+
+                    try {
+                        Enderecos enderecos = em.byClienteId(clientes.getId());
+                        Cidades cidades = new CidadesModel().byId(enderecos.getCidadeId());
+                        Estados uf = new EstadosModel().byId(enderecos.getEstadoId());
+
+                        clientes.setEndereco(enderecos.getLogradouro());
+                        clientes.setComplemento(enderecos.getComplemento());
+                        clientes.setBairro(enderecos.getBairro());
+                        clientes.setCep(formatar("#####-###", enderecos.getCep()));
+                        clientes.setCidade(cidades.getNome());
+                        clientes.setUf(uf.getSigla());
+
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    dados.add(clientes);
+                    relatorio = "relatorios/RelatorioClienteEspecifico.jrxml";
+                }
+
+                emitirRelatorio(dados, arquivo, relatorio);
                 try {
-                    Enderecos enderecos = em.byClienteId(clientes.getId());
-                    Cidades cidades = new CidadesModel().byId(enderecos.getCidadeId());
-                    Estados uf = new EstadosModel().byId(enderecos.getEstadoId());
-                    
-                    clientes.setEndereco(enderecos.getLogradouro());
-                    clientes.setComplemento(enderecos.getComplemento());
-                    clientes.setBairro(enderecos.getBairro());
-                    clientes.setCep(formatar("#####-###", enderecos.getCep()));
-                    clientes.setCidade(cidades.getNome());
-                    clientes.setUf(uf.getSigla());
-                    
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                } catch (ClassNotFoundException ex) {
+                    Desktop.getDesktop().open(new File(arquivo));
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-                
-                dados.add(clientes);
-                relatorio = "relatorios/RelatorioClienteEspecifico.jrxml";
             }
-
-            emitirRelatorio(dados, arquivo, relatorio);
-
+        }else{
+            avisar("Nenhum registro encontrado!");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

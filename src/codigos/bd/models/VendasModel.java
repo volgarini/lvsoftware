@@ -57,7 +57,7 @@ public class VendasModel extends Banco {
     public ArrayList<Vendas> filtrar(Date dataI, Date dataF, int cliente) throws SQLException, ClassNotFoundException {
         ArrayList<Vendas> vendas = new ArrayList<>();
         PreparedStatement ps = null;
-        String query = "select * from ROOT.VENDAS ";
+        String query = "select * from VENDAS ";
         
         String complemento = " WHERE ";
         if (dataI != null && dataF != null) {
@@ -74,12 +74,16 @@ public class VendasModel extends Banco {
         if (cliente > 0) {
             query += complemento + " CLIENTE_ID = " + cliente;
         }
+        
+        query += " ORDER BY DATA_CADASTRO";
+        
+        
         System.out.println(query);
         ps = getConnection().prepareStatement(query);
         ResultSet rs = ps.executeQuery();
         
         while(rs.next()){
-            vendas.add(new Vendas(rs.getInt("ID"), rs.getInt("CLIENTE_ID"), rs.getInt("PAGAMENTO_ID"), rs.getDate("DATA_CADASTRO"), rs.getFloat("VALOR_TOTAL"), rs.getFloat("DESCONTO"), rs.getFloat("VALOR_FINAL"), rs.getString("CLIENTE"), rs.getString("OBSERVACAO")));
+            vendas.add(new Vendas(rs.getInt("ID"), rs.getInt("CLIENTE_ID"), rs.getInt("PAGAMENTO_ID"), rs.getTimestamp("DATA_CADASTRO"), rs.getFloat("VALOR_TOTAL"), rs.getFloat("DESCONTO"), rs.getFloat("VALOR_FINAL"), rs.getString("CLIENTE"), rs.getString("OBSERVACAO")));
         }
         return vendas;
     }

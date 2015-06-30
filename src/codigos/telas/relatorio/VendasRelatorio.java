@@ -6,6 +6,7 @@
 package codigos.telas.relatorio;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public class VendasRelatorio implements Serializable {
     private String desconto;
     private String valorFinal;
     private String observacao;
+    private Date dataVenda;
     
     public VendasRelatorio() {
     }
@@ -100,6 +102,14 @@ public class VendasRelatorio implements Serializable {
 
     public void setValores(List<String> valores) {
         this.valores = valores;
+    }
+
+    public Date getDataVenda() {
+        return dataVenda;
+    }
+
+    public void setDataVenda(Date dataVenda) {
+        this.dataVenda = dataVenda;
     }
 
     

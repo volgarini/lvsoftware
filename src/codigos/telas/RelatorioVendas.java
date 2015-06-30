@@ -12,10 +12,11 @@ import codigos.bd.models.ClientesModel;
 import codigos.bd.models.VendasHasProdutosModel;
 import codigos.bd.models.VendasModel;
 import codigos.telas.relatorio.VendasRelatorio;
-import com.toedter.calendar.JCalendar;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDesktopPane;
@@ -69,7 +70,7 @@ public class RelatorioVendas extends Relatorio {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Relatório de Clientes");
+        jLabel1.setText("Relatório de Vendas");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Clientes:");
@@ -179,15 +180,13 @@ public class RelatorioVendas extends Relatorio {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            JFileChooser fileChooser = new JFileChooser();
-//        if (fileChooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
+
             int index = jComboBox1.getSelectedIndex();
-//            String arquivo = fileChooser.getSelectedFile().getPath() + ".pdf";
 
             java.util.Date dataI = jDateChooser1.getDate();
             java.util.Date dataF = jDateChooser2.getDate();
 
-            String relatorio = "relatorios/RelatorioClienteEspecifico.jrxml";
+            String relatorio = "relatorios/RelatorioVendasPeriodo.jrxml";
 
             if (index > 0) {
                 index = jComboBox2.getSelectedIndex();
@@ -197,19 +196,32 @@ public class RelatorioVendas extends Relatorio {
             Date dataIni = dataI == null ? null : new Date(dataI.getTime());
             Date dataFim = dataF == null ? null : new Date(dataF.getTime());
             ArrayList<Vendas> vendasArray = vendasModel.filtrar(dataIni, dataFim, index);
-            
-            ArrayList<VendasRelatorio> dados = new ArrayList<>();
-            for (Vendas vendas : vendasArray) {
-                VendasRelatorio vendasRelatorio = new VendasRelatorio();
-//                vendasRelatorio.setVenda(vendas);
-//                vendasRelatorio.setProdutosArray(vhpm.byVendasId(vendas.getId()));
-                dados.add(vendasRelatorio);
+
+            if (vendasArray.size() > 0) {
+                JFileChooser fileChooser = new JFileChooser();
+                if (fileChooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
+                    String arquivo = fileChooser.getSelectedFile().getPath() + ".pdf";
+                    ArrayList<VendasRelatorio> dados = new ArrayList<>();
+                    for (Vendas vendas : vendasArray) {
+                        VendasRelatorio vendasRelatorio = new VendasRelatorio();
+                        vendasRelatorio.setNome(vendas.getCliente());
+                        vendasRelatorio.setDataVenda(vendas.getDataCadastro());
+                        vendasRelatorio.setDesconto("R$ " + String.format("%.2f", vendas.getDesconto()));
+                        vendasRelatorio.setValorFinal("R$ " + String.format("%.2f", vendas.getValorFinal()));
+
+                        dados.add(vendasRelatorio);
+                    }
+                    emitirRelatorio(dados, arquivo, relatorio);
+                    Desktop.getDesktop().open(new File(arquivo));
+                }
+            } else {
+                avisar("Nenhum registro encontrado!");
             }
-//            emitirRelatorio(dados, arquivo, relatorio);
-//        }
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_jButton1ActionPerformed

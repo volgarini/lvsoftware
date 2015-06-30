@@ -15,22 +15,29 @@
         <band/>
     </background>
     <title>
-        <band height="72">
+        <band height="94">
             <frame>
-                <reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699"/>
+                <reportElement mode="Opaque" x="-20" y="-20" width="595" height="113" />
                 <staticText>
-                    <reportElement x="20" y="20" width="500" height="43" forecolor="#FFFFFF"/>
+                    <reportElement x="20" y="20" width="500" height="43" />
                     <textElement>
                         <font size="34" isBold="true"/>
                     </textElement>
-                    <text><![CDATA[Madurro Estúdio Fotográfico]]></text>
+                    <text><![CDATA[Madurro Studio Fotográfico]]></text>
                 </staticText>
                 <staticText>
-                    <reportElement x="20" y="65" width="500" height="20" forecolor="#FFFFFF"/>
+                    <reportElement x="20" y="65" width="500" height="20"  />
                     <textElement>
                         <font size="14" isBold="false"/>
                     </textElement>
-                    <text><![CDATA[Relatório de Clientes]]></text>
+                    <text><![CDATA[Rua Bartolomeu de Gusmão, 995A - Vila Tibério]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="20" y="90" width="500" height="20" />
+                    <textElement>
+                        <font size="14" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[Telefones: (16) 3443-4991 / (16) 99332-8675 / (16) 99961-4159]]></text>
                 </staticText>
             </frame>
         </band>

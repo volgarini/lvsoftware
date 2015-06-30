@@ -428,7 +428,7 @@ public class Venda extends Relatorio {
             VendasProduto vendasProduto = new VendasProduto(produtos.getId(), produtos.getDescricao(), String.valueOf(quantidade), String.valueOf(valor));
 
             tableModel.addRow(new String[]{vendasProduto.getDescricao(), vendasProduto.getQuantidade(), "R$ " + String.format("%.2f", valor)});
-//        listModel.addElement(descricao + vendasProduto.getQuantidade() + "    X    R$ " + vendasProduto.getValor());
+        
             produtosVendas.add(vendasProduto);
             valorTotal += valor * quantidade;
 
