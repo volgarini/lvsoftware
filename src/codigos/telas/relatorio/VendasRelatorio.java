@@ -25,6 +25,7 @@ public class VendasRelatorio implements Serializable {
     private String desconto;
     private String valorFinal;
     private String observacao;
+    private String pago;
     private Date dataVenda;
     
     public VendasRelatorio() {
@@ -110,6 +111,14 @@ public class VendasRelatorio implements Serializable {
 
     public void setDataVenda(Date dataVenda) {
         this.dataVenda = dataVenda;
+    }
+
+    public String getPago() {
+        return pago;
+    }
+
+    public void setPago(String pago) {
+        this.pago = pago;
     }
 
     

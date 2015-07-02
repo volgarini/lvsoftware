@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 
 /**
@@ -30,7 +31,11 @@ public class ClientesModel extends Banco {
                 + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
         ps.setString(1, cliente.getNome());
-        ps.setDate(2, cliente.getDataNascimento());
+        if (cliente.getDataNascimento() == null) {
+            ps.setNull(2, Types.DATE);
+        } else {
+            ps.setDate(2, cliente.getDataNascimento());
+        }
         ps.setString(3, String.valueOf(cliente.getSexo()));
         ps.setString(4, cliente.getNomePai());
         ps.setString(5, cliente.getCpfPai());
@@ -63,7 +68,11 @@ public class ClientesModel extends Banco {
                 + " WHERE ID = ?");
 
         ps.setString(1, cliente.getNome());
-        ps.setDate(2, cliente.getDataNascimento());
+        if (cliente.getDataNascimento() == null) {
+            ps.setNull(2, Types.DATE);
+        } else {
+            ps.setDate(2, cliente.getDataNascimento());
+        }
         ps.setString(3, String.valueOf(cliente.getSexo()));
         ps.setString(4, cliente.getNomePai());
         ps.setString(5, cliente.getCpfPai());

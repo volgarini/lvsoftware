@@ -52,7 +52,7 @@ public class Banco {
 //                    + this.banco
 //                    + ";create=true",
 //                    connectionProps);
-            System.out.println("Connected to database");
+//            System.out.println("Connected to database");
         }
         return conn;
     }
@@ -203,6 +203,7 @@ public class Banco {
                 + "VALOR_FINAL DECIMAL(6,2), "
                 + "CLIENTE VARCHAR(150), "
                 + "OBSERVACAO LONG VARCHAR, "
+                + "PAGO CHAR(1), "
                 + "DATA_CADASTRO TIMESTAMP, "
                 + "CONSTRAINT FK_VENDAS_CLIENTES FOREIGN KEY (CLIENTE_ID) "
                 + "REFERENCES CLIENTES (ID), "

@@ -24,6 +24,7 @@ public class Vendas implements Serializable {
     private float valorFinal;
     private String cliente;
     private String observacao;
+    private char pago;
     
     public Vendas() {
     }
@@ -32,7 +33,7 @@ public class Vendas implements Serializable {
         this.id = id;
     }
 
-    public Vendas(Integer id, Integer clienteId, Integer pagamentoId, Date dataCadastro, float valorTotal, float desconto, float valorFinal, String cliente, String observacao) {
+    public Vendas(Integer id, Integer clienteId, Integer pagamentoId, Date dataCadastro, float valorTotal, float desconto, float valorFinal, String cliente, String observacao, char pago) {
         this.id = id;
         this.clienteId = clienteId;
         this.pagamentoId = pagamentoId;
@@ -42,7 +43,10 @@ public class Vendas implements Serializable {
         this.valorFinal = valorFinal;
         this.cliente = cliente;
         this.observacao = observacao;
+        this.pago = pago;
     }
+
+
 
 
 
@@ -118,10 +122,17 @@ public class Vendas implements Serializable {
         this.observacao = observacao;
     }
 
-    @Override
-    public String toString() {
-        return "Vendas{" + "id=" + id + ", clienteId=" + clienteId + ", pagamentoId=" + pagamentoId + ", dataCadastro=" + dataCadastro + ", valorTotal=" + valorTotal + ", desconto=" + desconto + ", valorFinal=" + valorFinal + ", cliente=" + cliente + ", observacao=" + observacao + '}';
+    public char getPago() {
+        return pago;
     }
 
-    
+    public void setPago(char pago) {
+        this.pago = pago;
+    }
+
+    @Override
+    public String toString() {
+        return "Vendas{" + "id=" + id + ", clienteId=" + clienteId + ", pagamentoId=" + pagamentoId + ", dataCadastro=" + dataCadastro + ", valorTotal=" + valorTotal + ", desconto=" + desconto + ", valorFinal=" + valorFinal + ", cliente=" + cliente + ", observacao=" + observacao + ", pago=" + pago + '}';
+    }
+   
 }

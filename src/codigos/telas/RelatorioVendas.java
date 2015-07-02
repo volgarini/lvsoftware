@@ -195,7 +195,7 @@ public class RelatorioVendas extends Relatorio {
 
             Date dataIni = dataI == null ? null : new Date(dataI.getTime());
             Date dataFim = dataF == null ? null : new Date(dataF.getTime());
-            ArrayList<Vendas> vendasArray = vendasModel.filtrar(dataIni, dataFim, index);
+            ArrayList<Vendas> vendasArray = vendasModel.filtrar(dataIni, dataFim, index, '\0');
 
             if (vendasArray.size() > 0) {
                 JFileChooser fileChooser = new JFileChooser();
@@ -208,7 +208,7 @@ public class RelatorioVendas extends Relatorio {
                         vendasRelatorio.setDataVenda(vendas.getDataCadastro());
                         vendasRelatorio.setDesconto("R$ " + String.format("%.2f", vendas.getDesconto()));
                         vendasRelatorio.setValorFinal("R$ " + String.format("%.2f", vendas.getValorFinal()));
-
+                        vendasRelatorio.setPago(String.valueOf(vendas.getPago()));
                         dados.add(vendasRelatorio);
                     }
                     emitirRelatorio(dados, arquivo, relatorio);

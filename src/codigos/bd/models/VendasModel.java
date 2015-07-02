@@ -27,8 +27,8 @@ public class VendasModel extends Banco {
 
     public int inserir(Vendas vendas) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("INSERT INTO VENDAS "
-                + "(CLIENTE_ID, PAGAMENTO_ID, VALOR_TOTAL, DESCONTO, VALOR_FINAL, DATA_CADASTRO, CLIENTE, OBSERVACAO)"
-                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                + "(CLIENTE_ID, PAGAMENTO_ID, VALOR_TOTAL, DESCONTO, VALOR_FINAL, DATA_CADASTRO, CLIENTE, OBSERVACAO, PAGO)"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
         if (vendas.getClienteId() == null) {
             ps.setNull(1, Types.INTEGER);
@@ -38,11 +38,15 @@ public class VendasModel extends Banco {
         ps.setInt(2, vendas.getPagamentoId());
         ps.setFloat(3, vendas.getValorTotal());
         ps.setFloat(4, vendas.getDesconto());
-        System.out.println(vendas.getValorFinal());
         ps.setFloat(5, vendas.getValorFinal());
-        ps.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+        if (vendas.getDataCadastro() == null) {
+            ps.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+        }else{
+            ps.setTimestamp(6, new Timestamp(vendas.getDataCadastro().getTime()));
+        }
         ps.setString(7, vendas.getCliente());
         ps.setString(8, vendas.getObservacao());
+        ps.setString(9, String.valueOf(vendas.getPago()));
 
         if (ps.executeUpdate() > 0) {
             ResultSet rs = ps.getGeneratedKeys();
@@ -54,11 +58,11 @@ public class VendasModel extends Banco {
 
     }
 
-    public ArrayList<Vendas> filtrar(Date dataI, Date dataF, int cliente) throws SQLException, ClassNotFoundException {
+    public ArrayList<Vendas> filtrar(Date dataI, Date dataF, int cliente, char pago) throws SQLException, ClassNotFoundException {
         ArrayList<Vendas> vendas = new ArrayList<>();
         PreparedStatement ps = null;
         String query = "select * from VENDAS ";
-        
+
         String complemento = " WHERE ";
         if (dataI != null && dataF != null) {
             query += "where (date(DATA_CADASTRO) between '" + dataI + "' and '" + dataF + "') ";
@@ -73,31 +77,35 @@ public class VendasModel extends Banco {
 
         if (cliente > 0) {
             query += complemento + " CLIENTE_ID = " + cliente;
+            complemento = " AND ";
         }
-        
+
+        if (pago != '\0') {
+            query += complemento + " PAGO = '" + pago + "'";
+        }
         query += " ORDER BY DATA_CADASTRO";
-        
-        
+
         System.out.println(query);
         ps = getConnection().prepareStatement(query);
         ResultSet rs = ps.executeQuery();
-        
-        while(rs.next()){
-            vendas.add(new Vendas(rs.getInt("ID"), rs.getInt("CLIENTE_ID"), rs.getInt("PAGAMENTO_ID"), rs.getTimestamp("DATA_CADASTRO"), rs.getFloat("VALOR_TOTAL"), rs.getFloat("DESCONTO"), rs.getFloat("VALOR_FINAL"), rs.getString("CLIENTE"), rs.getString("OBSERVACAO")));
+
+        while (rs.next()) {
+            vendas.add(new Vendas(rs.getInt("ID"), rs.getInt("CLIENTE_ID"), rs.getInt("PAGAMENTO_ID"), rs.getTimestamp("DATA_CADASTRO"), rs.getFloat("VALOR_TOTAL"), rs.getFloat("DESCONTO"), rs.getFloat("VALOR_FINAL"), rs.getString("CLIENTE"), rs.getString("OBSERVACAO"), rs.getString("PAGO").charAt(0)));
         }
+
         return vendas;
     }
 
-    public int atualizar(Vendas pagamentos) throws SQLException {
-//        PreparedStatement ps = getConnection().prepareStatement("UPDATE PAGAMENTOS SET "
-//                + "DESCRICAO = ? WHERE ID = ?");
-//
-//        ps.setString(1, pagamentos.getDescricao());
-//        ps.setInt(2, pagamentos.getId());
-//
-//        if (ps.executeUpdate() > 0) {
-//            return pagamentos.getId();
-//        }
+    public int atualizarPagamento(Vendas vendas) throws SQLException, ClassNotFoundException {
+        PreparedStatement ps = getConnection().prepareStatement("UPDATE VENDAS SET "
+                + "PAGO = ? WHERE ID = ?");
+
+        ps.setString(1, String.valueOf(vendas.getPago()));
+        ps.setInt(2, vendas.getId());
+
+        if (ps.executeUpdate() > 0) {
+            return vendas.getId();
+        }
         return -1;
 
     }

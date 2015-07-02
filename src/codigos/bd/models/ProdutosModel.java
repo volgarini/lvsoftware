@@ -104,6 +104,18 @@ public class ProdutosModel extends Banco {
         return new Produtos(-1);
     }
 
+    public Produtos byId(int id) throws SQLException, ClassNotFoundException {
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS WHERE ID = ?");
+        ps.setInt(1, id);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return new Produtos(rs.getInt("ID"), rs.getString("DESCRICAO"), rs.getString("CODIGO_BARRAS"), rs.getFloat("VALOR"), rs.getInt("QUANTIDADE"), rs.getString("TIPO"));
+        }
+        return new Produtos(-1);
+    }
+    
     public ArrayList<Produtos> likeDescricao(String descricao) throws SQLException, ClassNotFoundException {
         ArrayList<Produtos> produtos = new ArrayList<>();
 

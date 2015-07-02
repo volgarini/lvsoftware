@@ -154,7 +154,11 @@ public class ModalityInternalFrame extends JInternalFrame {
         return "";
 
     }
-
+/***
+ * Método que tras uma caixa de confirmação com Sim ou Não
+ * @param Mensagem Mensagem de confirmação
+ * @return 0 pra true e 1 pra false
+ */
     protected int confirmar(String Mensagem) {
         return JOptionPane.showConfirmDialog(null, Mensagem, "Confirmação", JOptionPane.YES_NO_OPTION);
     }

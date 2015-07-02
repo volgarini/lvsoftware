@@ -469,7 +469,11 @@ public class Cliente extends ModalityInternalFrame {
             //dados do filho
             clientes.setNome(jTextField1.getText().trim());
 
-            clientes.setDataNascimento(new Date(jDateChooser1.getDate().getTime()));
+            java.util.Date data = jDateChooser1.getDate();
+            
+            Date dataNascimento = data == null ? null : new Date(data.getTime());
+            
+            clientes.setDataNascimento(dataNascimento);
             clientes.setSexo(jComboBox1.getSelectedIndex() == 0 ? 'M' : 'F');
 
             //dados do pai
