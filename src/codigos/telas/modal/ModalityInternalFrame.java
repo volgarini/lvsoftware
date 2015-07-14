@@ -31,7 +31,11 @@ import javax.swing.text.MaskFormatter;
  * @author webbyit
  */
 public class ModalityInternalFrame extends JInternalFrame {
-
+    public static final int TIPO_CLIENTE = 0;
+    public static final int TIPO_PRODUTO = 1;
+    public static final int TIPO_PAGAMENTO = 2;
+    
+    public static int tipo = -1;
     public static int linha = -1;
     protected JDesktopPane desktopPane;
     protected JComponent parent;

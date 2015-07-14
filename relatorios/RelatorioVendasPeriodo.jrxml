@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-06-30T11:51:17 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioClientes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
+<!-- 2015-07-03T14:37:00 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioClientes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -10,8 +10,7 @@
 	<field name="dataVenda" class="java.util.Date"/>
 	<field name="desconto" class="java.lang.String"/>
 	<field name="valorFinal" class="java.lang.String"/>
-        <field name="pago" class="java.lang.String"/>
-
+	<field name="dataPagamento" class="java.lang.String"/>
 	<background>
 		<band/>
 	</background>
@@ -20,21 +19,21 @@
 			<frame>
 				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="113" />
 				<staticText>
-					<reportElement x="20" y="20" width="500" height="43" />
+					<reportElement x="20" y="20" width="535" height="43" />
 					<textElement>
 						<font size="34" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Madurro Studio Fotográfico]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="20" y="65" width="500" height="20" />
+					<reportElement x="20" y="65" width="535" height="20" />
 					<textElement>
 						<font size="14" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Rua Bartolomeu de Gusmão, 995A - Vila Tibério]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="20" y="90" width="500" height="20" />
+					<reportElement x="20" y="90" width="535" height="20" />
 					<textElement>
 						<font size="14" isBold="false"/>
 					</textElement>
@@ -49,74 +48,73 @@
 	<columnHeader>
 		<band height="21">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="200" height="20" forecolor="#006699" backcolor="#E6E6E6" />
+				<reportElement mode="Opaque" x="0" y="0" width="160" height="20" forecolor="#006699" backcolor="#E6E6E6" />
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nome]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="200" y="0" width="105" height="20" forecolor="#006699" backcolor="#E6E6E6" />
+				<reportElement mode="Opaque" x="160" y="0" width="105" height="20" forecolor="#006699" backcolor="#E6E6E6" />
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data da Venda]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="305" y="0" width="80" height="20" forecolor="#006699" backcolor="#E6E6E6" />
+				<reportElement mode="Opaque" x="265" y="0" width="75" height="20" forecolor="#006699" backcolor="#E6E6E6" />
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Desconto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="385" y="0" width="100" height="20" forecolor="#006699" backcolor="#E6E6E6" />
+				<reportElement mode="Opaque" x="340" y="0" width="100" height="20" forecolor="#006699" backcolor="#E6E6E6" />
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Valor Final]]></text>
 			</staticText>
-                        <staticText>
-				<reportElement mode="Opaque" x="485" y="0" width="50" height="20" forecolor="#006699" backcolor="#E6E6E6" />
+			<staticText>
+				<reportElement mode="Opaque" x="440" y="0" width="95" height="20" forecolor="#006699" backcolor="#E6E6E6" />
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Pago]]></text>
+				<text><![CDATA[Pagamento]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="22">
 			<textField>
-				<reportElement x="0" y="0" width="200" height="19" />
+				<reportElement x="0" y="0" width="160" height="19" />
 				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy HH:mm">
-				<reportElement x="200" y="0" width="105" height="19" />
-                                <textElement textAlignment="Center"/>
+				<reportElement x="160" y="0" width="105" height="19" />
+				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{dataVenda}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="305" y="0" width="80" height="19" />
-                                <textElement textAlignment="Center"/>
+				<reportElement x="265" y="0" width="75" height="19" />
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{desconto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="385" y="0" width="100" height="19" />
-                                <textElement textAlignment="Center"/>
+				<reportElement x="340" y="0" width="100" height="19" />
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{valorFinal}]]></textFieldExpression>
 			</textField>
-                        <textField>
-				<reportElement x="485" y="0" width="50" height="19" />
-                                <textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{pago}]]></textFieldExpression>
+			<textField>
+				<reportElement x="440" y="0" width="95" height="19" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{dataPagamento}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="20" width="535" height="1" forecolor="#666666" />
 			</line>
 		</band>
 	</detail>
-	
 	<pageFooter>
 		<band height="17">
 			<textField pattern="dd/MM/yyyy HH:mm">
@@ -125,5 +123,4 @@
 			</textField>
 		</band>
 	</pageFooter>
-	
 </jasperReport>

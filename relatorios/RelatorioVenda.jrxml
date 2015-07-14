@@ -43,11 +43,16 @@
                 <field name="quantidade" class="java.lang.String">
 			<fieldDescription><![CDATA[_THIS]]></fieldDescription>
 		</field>
+                <field name="valorProduto" class="java.lang.String">
+			<fieldDescription><![CDATA[_THIS]]></fieldDescription>
+		</field>
+                
 	</subDataset>
 	<field name="nome" class="java.lang.String"/>
 	<field name="descricoes" class="java.util.Collection"/>
 	<field name="valores" class="java.util.Collection"/>
         <field name="quantidades" class="java.util.Collection"/>
+        <field name="valorProdutos" class="java.util.Collection"/>
 	<field name="valorTotal" class="java.lang.String"/>
 	<field name="desconto" class="java.lang.String"/>
 	<field name="valorFinal" class="java.lang.String"/>
@@ -112,35 +117,42 @@
 				<text><![CDATA[PRODUTOS / SERVIÇOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="60" width="360" height="20" forecolor="#000000" />
+				<reportElement x="0" y="60" width="250" height="20" forecolor="#000000" />
 				<textElement textAlignment="Left" rotation="None">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descrição]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="360" y="60" width="100" height="20" forecolor="#000000" />
+				<reportElement x="250" y="60" width="100" height="20" forecolor="#000000" />
 				<textElement textAlignment="Left">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Quantidade]]></text>
 			</staticText>
 			<staticText>
+				<reportElement x="350" y="60" width="90" height="20" forecolor="#000000" />
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Unitário]]></text>
+			</staticText>
+                        <staticText>
 				<reportElement x="460" y="60" width="90" height="20" forecolor="#000000" />
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Valor]]></text>
+				<text><![CDATA[Valor Total]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement x="-1" y="90" width="362" height="20" />
+				<reportElement x="0" y="90" width="250" height="20" />
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset1" >
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{descricoes})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="20" width="362">
+					<jr:listContents height="20" width="250">
 						<textField>
-							<reportElement x="0" y="0" width="100" height="20" />
+							<reportElement x="0" y="0" width="250" height="20" />
 							<textElement>
 								<font size="12"/>
 							</textElement>
@@ -150,14 +162,14 @@
 				</jr:list>
 			</componentElement>
                         <componentElement>
-				<reportElement x="380" y="90" width="90" height="20" />
+				<reportElement x="250" y="90" width="100" height="20" />
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset1" >
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{quantidades})]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="20" width="100">
 						<textField>
-							<reportElement x="0" y="0" width="20" height="20" />
+							<reportElement x="0" y="0" width="100" height="20" />
 							<textElement textAlignment="Center">
 								<font size="12"/>
 							</textElement>
@@ -167,18 +179,35 @@
 				</jr:list>
 			</componentElement>
 			<componentElement>
-				<reportElement x="450" y="90" width="90" height="20" />
+				<reportElement x="350" y="90" width="90" height="20" />
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset1" >
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{valores})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="20" width="100">
+					<jr:listContents height="20" width="90">
 						<textField>
-							<reportElement x="0" y="0" width="100" height="20" />
+							<reportElement x="0" y="0" width="90" height="20" />
 							<textElement textAlignment="Right">
 								<font size="12"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+                        <componentElement>
+				<reportElement x="460" y="90" width="90" height="20" />
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Dataset1" >
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{valorProdutos})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="90">
+						<textField>
+							<reportElement x="0" y="0" width="90" height="20" />
+							<textElement textAlignment="Right">
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{valorProduto}]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>

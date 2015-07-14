@@ -24,8 +24,8 @@ public class Vendas implements Serializable {
     private float valorFinal;
     private String cliente;
     private String observacao;
-    private char pago;
-    
+    private Date dataPagamento;
+
     public Vendas() {
     }
 
@@ -33,7 +33,7 @@ public class Vendas implements Serializable {
         this.id = id;
     }
 
-    public Vendas(Integer id, Integer clienteId, Integer pagamentoId, Date dataCadastro, float valorTotal, float desconto, float valorFinal, String cliente, String observacao, char pago) {
+    public Vendas(Integer id, Integer clienteId, Integer pagamentoId, Date dataCadastro, float valorTotal, float desconto, float valorFinal, String cliente, String observacao, Date dataPagamento) {
         this.id = id;
         this.clienteId = clienteId;
         this.pagamentoId = pagamentoId;
@@ -43,12 +43,8 @@ public class Vendas implements Serializable {
         this.valorFinal = valorFinal;
         this.cliente = cliente;
         this.observacao = observacao;
-        this.pago = pago;
+        this.dataPagamento = dataPagamento;
     }
-
-
-
-
 
     public Integer getId() {
         return id;
@@ -122,17 +118,17 @@ public class Vendas implements Serializable {
         this.observacao = observacao;
     }
 
-    public char getPago() {
-        return pago;
+    public Date getDataPagamento() {
+        return dataPagamento;
     }
 
-    public void setPago(char pago) {
-        this.pago = pago;
+    public void setDataPagamento(Date dataPagamento) {
+        this.dataPagamento = dataPagamento;
     }
 
     @Override
     public String toString() {
-        return "Vendas{" + "id=" + id + ", clienteId=" + clienteId + ", pagamentoId=" + pagamentoId + ", dataCadastro=" + dataCadastro + ", valorTotal=" + valorTotal + ", desconto=" + desconto + ", valorFinal=" + valorFinal + ", cliente=" + cliente + ", observacao=" + observacao + ", pago=" + pago + '}';
+        return "Vendas{" + "id=" + id + ", clienteId=" + clienteId + ", pagamentoId=" + pagamentoId + ", dataCadastro=" + dataCadastro + ", valorTotal=" + valorTotal + ", desconto=" + desconto + ", valorFinal=" + valorFinal + ", cliente=" + cliente + ", observacao=" + observacao + ", dataPagamento=" + dataPagamento + '}';
     }
-   
+
 }

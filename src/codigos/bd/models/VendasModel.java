@@ -27,7 +27,7 @@ public class VendasModel extends Banco {
 
     public int inserir(Vendas vendas) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("INSERT INTO VENDAS "
-                + "(CLIENTE_ID, PAGAMENTO_ID, VALOR_TOTAL, DESCONTO, VALOR_FINAL, DATA_CADASTRO, CLIENTE, OBSERVACAO, PAGO)"
+                + "(CLIENTE_ID, PAGAMENTO_ID, VALOR_TOTAL, DESCONTO, VALOR_FINAL, DATA_CADASTRO, CLIENTE, OBSERVACAO, DATA_PAGAMENTO)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
         if (vendas.getClienteId() == null) {
@@ -41,12 +41,17 @@ public class VendasModel extends Banco {
         ps.setFloat(5, vendas.getValorFinal());
         if (vendas.getDataCadastro() == null) {
             ps.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
-        }else{
+        } else {
             ps.setTimestamp(6, new Timestamp(vendas.getDataCadastro().getTime()));
         }
         ps.setString(7, vendas.getCliente());
         ps.setString(8, vendas.getObservacao());
-        ps.setString(9, String.valueOf(vendas.getPago()));
+
+        if (vendas.getDataPagamento() == null) {
+            ps.setNull(9, Types.TIMESTAMP);
+        } else {
+            ps.setTimestamp(9, new Timestamp(vendas.getDataPagamento().getTime()));
+        }
 
         if (ps.executeUpdate() > 0) {
             ResultSet rs = ps.getGeneratedKeys();
@@ -80,8 +85,10 @@ public class VendasModel extends Banco {
             complemento = " AND ";
         }
 
-        if (pago != '\0') {
-            query += complemento + " PAGO = '" + pago + "'";
+        if (pago == 'S') {
+            query += complemento + " DATA_PAGAMENTO IS NOT NULL ";
+        } else if (pago == 'N') {
+            query += complemento + " DATA_PAGAMENTO IS NULL ";
         }
         query += " ORDER BY DATA_CADASTRO";
 
@@ -90,7 +97,7 @@ public class VendasModel extends Banco {
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
-            vendas.add(new Vendas(rs.getInt("ID"), rs.getInt("CLIENTE_ID"), rs.getInt("PAGAMENTO_ID"), rs.getTimestamp("DATA_CADASTRO"), rs.getFloat("VALOR_TOTAL"), rs.getFloat("DESCONTO"), rs.getFloat("VALOR_FINAL"), rs.getString("CLIENTE"), rs.getString("OBSERVACAO"), rs.getString("PAGO").charAt(0)));
+            vendas.add(new Vendas(rs.getInt("ID"), rs.getInt("CLIENTE_ID"), rs.getInt("PAGAMENTO_ID"), rs.getTimestamp("DATA_CADASTRO"), rs.getFloat("VALOR_TOTAL"), rs.getFloat("DESCONTO"), rs.getFloat("VALOR_FINAL"), rs.getString("CLIENTE"), rs.getString("OBSERVACAO"), rs.getTimestamp("DATA_PAGAMENTO")));
         }
 
         return vendas;
@@ -98,10 +105,16 @@ public class VendasModel extends Banco {
 
     public int atualizarPagamento(Vendas vendas) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("UPDATE VENDAS SET "
-                + "PAGO = ? WHERE ID = ?");
+                + "DATA_PAGAMENTO = ?, OBSERVACAO = ? WHERE ID = ?");
 
-        ps.setString(1, String.valueOf(vendas.getPago()));
-        ps.setInt(2, vendas.getId());
+        if (vendas.getDataPagamento() == null) {
+            ps.setNull(1, Types.TIMESTAMP);
+        } else {
+            ps.setTimestamp(1, new Timestamp(vendas.getDataPagamento().getTime()));
+        }
+
+        ps.setString(2, vendas.getObservacao());
+        ps.setInt(3, vendas.getId());
 
         if (ps.executeUpdate() > 0) {
             return vendas.getId();

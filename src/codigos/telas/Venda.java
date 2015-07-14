@@ -23,9 +23,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
@@ -49,6 +48,7 @@ public class Venda extends Relatorio {
     private ArrayList<Pagamentos> ptosArray;
 
     private Clientes clientes;
+    private Produtos produtos;
 //    private final DefaultListModel listModel;
 
     private DefaultTableModel tableModel;
@@ -71,6 +71,7 @@ public class Venda extends Relatorio {
 
 //        listModel = new DefaultListModel();
         clientes = new Clientes(-1);
+        produtos = new Produtos(-1);
         initComponents();
 
         tableModel = (DefaultTableModel) jTable1.getModel();
@@ -91,7 +92,6 @@ public class Venda extends Relatorio {
         jTextField1 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
         jLabel9 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
         jButton4 = new javax.swing.JButton();
@@ -105,6 +105,9 @@ public class Venda extends Relatorio {
         jTable1 = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jButton6 = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
+        jButton7 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -151,13 +154,6 @@ public class Venda extends Relatorio {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
-            }
-        });
-
-        fillProdutos();
-        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox1ItemStateChanged(evt);
             }
         });
 
@@ -225,6 +221,32 @@ public class Venda extends Relatorio {
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel12.setText("Cliente:");
 
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisa_pessoa.png"))); // NOI18N
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
+            }
+        });
+
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icone_remover.png")));
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -236,8 +258,12 @@ public class Venda extends Relatorio {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jNumericField2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -276,23 +302,28 @@ public class Venda extends Relatorio {
                         .addComponent(jLabel12))
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel9)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jNumericField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel11))
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(26, 26, 26)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jNumericField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11))
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(78, 78, 78)
@@ -361,7 +392,7 @@ public class Venda extends Relatorio {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jNumericField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -424,41 +455,41 @@ public class Venda extends Relatorio {
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            tabelaBusca();
+            tabelaBuscaClientes();
         }
     }//GEN-LAST:event_jTextField1KeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        tabelaBusca();
+        tabelaBuscaClientes();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Produtos produtos = produtosArray.get(jComboBox1.getSelectedIndex());
-        int confirmar = 0;
-        if (produtos.getTipo().compareToIgnoreCase("P") == 0 && produtos.getQuantidade() <= 0) {
-            confirmar = confirmar("Você está com estoque zerado do produto: " + produtos.getDescricao() + ". Deseja continuar?");
+        if (produtos.getId() > -1) {
+            int confirmar = 0;
+            if (produtos.getTipo().compareToIgnoreCase("P") == 0 && produtos.getQuantidade() <= 0) {
+                confirmar = confirmar("Você está com estoque zerado do produto: " + produtos.getDescricao() + ". Deseja continuar?");
+            }
+
+            if (confirmar == 0) {
+                float valor = jNumericField2.getFloat();
+                int quantidade = Integer.valueOf(jSpinner1.getValue().toString());
+                float valorTotal = Float.valueOf(jFormattedTextField2.getText().replace(',', '.'));
+                float desconto = jNumericField1.getFloat();
+
+                float valorProdutos = quantidade * valor;
+
+                VendasProduto vendasProduto = new VendasProduto(produtos.getId(), produtos.getDescricao(), String.valueOf(quantidade), String.valueOf(valor));
+
+                tableModel.addRow(new String[]{vendasProduto.getDescricao(), vendasProduto.getQuantidade(), "R$ " + String.format("%.2f", valor), "R$ " + String.format("%.2f", valorProdutos)});
+
+                produtosVendas.add(vendasProduto);
+                valorTotal += valor * quantidade;
+
+                float valorFinal = valorTotal - desconto;
+                jFormattedTextField2.setText(String.format("%.2f", valorTotal));
+                jFormattedTextField3.setText(String.format("%.2f", valorFinal < 0 ? 0 : valorFinal));
+            }
         }
-
-        if (confirmar == 0) {
-            float valor = jNumericField2.getFloat();
-            int quantidade = Integer.valueOf(jSpinner1.getValue().toString());
-            float valorTotal = Float.valueOf(jFormattedTextField2.getText().replace(',', '.'));
-            float desconto = jNumericField1.getFloat();
-
-            float valorProdutos = quantidade * valor;
-            
-            VendasProduto vendasProduto = new VendasProduto(produtos.getId(), produtos.getDescricao(), String.valueOf(quantidade), String.valueOf(valor));
-
-            tableModel.addRow(new String[]{vendasProduto.getDescricao(), vendasProduto.getQuantidade(), "R$ " + String.format("%.2f", valor), "R$ " + String.format("%.2f", valorProdutos)});
-
-            produtosVendas.add(vendasProduto);
-            valorTotal += valor * quantidade;
-
-            float valorFinal = valorTotal - desconto;
-            jFormattedTextField2.setText(String.format("%.2f", valorTotal));
-            jFormattedTextField3.setText(String.format("%.2f", valorFinal < 0 ? 0 : valorFinal));
-        }
-
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -495,7 +526,7 @@ public class Venda extends Relatorio {
                     float valorTotal = Float.valueOf(jFormattedTextField2.getText().replace(',', '.'));
                     float valorFinal = Float.valueOf(jFormattedTextField3.getText().replace(',', '.'));
                     java.util.Date data = jDateChooser1.getDate();
-                    
+
                     venda.setClienteId(clientes.getId() == -1 ? null : clientes.getId());
                     venda.setCliente(jTextField1.getText().trim());
 
@@ -504,9 +535,12 @@ public class Venda extends Relatorio {
                     venda.setDesconto(jNumericField1.getFloat());
                     venda.setValorTotal(valorTotal);
                     venda.setValorFinal(valorFinal);
-                    venda.setPago(jCheckBox1.isSelected() ? 'S' : 'N');
+
                     venda.setDataCadastro(data);
-                    
+
+                    venda.setDataPagamento(jCheckBox1.isSelected() ? new Timestamp(System.currentTimeMillis()) : null);
+                    venda.setDataPagamento(null);
+
                     System.out.println(venda.toString());
 
                     int id = vendasModel.inserir(venda);
@@ -516,6 +550,7 @@ public class Venda extends Relatorio {
                         ArrayList<String> descricao = new ArrayList<>();
                         ArrayList<String> quantidade = new ArrayList<>();
                         ArrayList<String> valor = new ArrayList<>();
+                        ArrayList<String> valorProdutos = new ArrayList<>();
 
                         for (VendasProduto produto : produtosVendas) {
                             //insere os produtos
@@ -526,7 +561,7 @@ public class Venda extends Relatorio {
                             descricao.add(produto.getDescricao());
                             quantidade.add(produto.getQuantidade());
                             valor.add("R$ " + String.format("%.2f", Float.valueOf(produto.getValor())));
-
+                            valorProdutos.add("R$ " + String.format("%.2f", (Float.valueOf(produto.getValor()) * Float.valueOf(produto.getQuantidade()))));
                             produtosModel.atualizarQuantidade(produto.getId(), qtd);
                         }
 
@@ -537,6 +572,7 @@ public class Venda extends Relatorio {
                         relatorio.setDescricoes(descricao);
                         relatorio.setQuantidades(quantidade);
                         relatorio.setValores(valor);
+                        relatorio.setValorProdutos(valorProdutos);
                         relatorio.setValorTotal("R$ " + String.format("%.2f", venda.getValorTotal()));
                         relatorio.setDesconto("-R$ " + String.format("%.2f", venda.getDesconto()));
                         relatorio.setValorFinal("R$ " + String.format("%.2f", venda.getValorFinal()));
@@ -580,10 +616,32 @@ public class Venda extends Relatorio {
     private void jNumericField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jNumericField2FocusLost
     }//GEN-LAST:event_jNumericField2FocusLost
 
-    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-        jNumericField2.setFloat(produtosArray.get(jComboBox1.getSelectedIndex()).getValor());
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        tabelaBuscaProdutos();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
-    }//GEN-LAST:event_jComboBox1ItemStateChanged
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            tabelaBuscaProdutos();
+        }
+    }//GEN-LAST:event_jTextField2KeyPressed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        limparProduto();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void limparProduto() {
+        jTextField2.setText("");
+        jNumericField2.setFloat(0);
+        jSpinner1.setValue(1);
+        linha = -1;
+        produtos = new Produtos(-1);
+    }
+
     private void limparCliente() {
         jTextField1.setText("");
         linha = -1;
@@ -597,14 +655,20 @@ public class Venda extends Relatorio {
     }
 
     private void fillCampos() {
-        if (linha > -1 && clientesArray.size() > 0) {
+        if (linha > -1 && clientesArray.size() > 0 && tipo == TIPO_CLIENTE) {
             clientes = clientesArray.get(linha);
             jTextField1.setText(clientes.getNome());
+            linha = -1;
+        } else if (linha > -1 && produtosArray.size() > 0 && tipo == TIPO_PRODUTO) {
+            produtos = produtosArray.get(linha);
+            jTextField2.setText(produtos.getDescricao());
+            jNumericField2.setFloat(produtos.getValor());
+            jSpinner1.setValue(1);
             linha = -1;
         }
     }
 
-    private void tabelaBusca() {
+    private void tabelaBuscaClientes() {
         String nome = jTextField1.getText().trim();
 
         try {
@@ -630,28 +694,49 @@ public class Venda extends Relatorio {
 
     }
 
-    private void fillProdutos() {
+    private void tabelaBuscaProdutos() {
+        String descricao = jTextField2.getText().trim();
         try {
-
-            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
-            jComboBox1.removeAllItems();
-            produtosArray = produtosModel.getAll();
-
-            if (!produtosArray.isEmpty()) {
-                for (Produtos produto : produtosArray) {
-                    comboBoxModel.addElement(produto);
-                }
-
-//                jNumericField2.setFloat(produtosArray.get(0).getValor());
+            if (!descricao.isEmpty()) {
+                produtosArray = produtosModel.likeDescricao(descricao);
+            } else {
+                produtosArray = produtosModel.getAll();
             }
-            jComboBox1.setModel(comboBoxModel);
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            if (produtosArray.size() > 0) {
+                TabelaBusca tabelaCliente = new TabelaBusca(this, null, produtosArray, null);
+                JOptionPane.getDesktopPaneForComponent(this).add(tabelaCliente);
+                tabelaCliente.show();
+            } else {
+                super.avisar("Nenhum registro encontrado!");
+            }
+        } catch (SQLException ex) {
+
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+
         }
     }
 
+    /*private void fillProdutos() {
+     try {
+
+     DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
+     jComboBox1.removeAllItems();
+     produtosArray = produtosModel.getAll();
+
+     if (!produtosArray.isEmpty()) {
+     for (Produtos produto : produtosArray) {
+     comboBoxModel.addElement(produto);
+     }
+
+     }
+     jComboBox1.setModel(comboBoxModel);
+     } catch (SQLException e) {
+     e.printStackTrace();
+     } catch (ClassNotFoundException ex) {
+     ex.printStackTrace();
+     }
+     }*/
     private void fillPagamentos() {
         try {
 
@@ -675,8 +760,9 @@ public class Venda extends Relatorio {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JFormattedTextField jFormattedTextField2;
@@ -701,5 +787,6 @@ public class Venda extends Relatorio {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,8 +6,10 @@
 package codigos.bd;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -40,19 +42,18 @@ public class Banco {
     public Connection getConnection() throws SQLException, ClassNotFoundException {
         if (conn == null || conn.isClosed()) {
             System.out.println("Conectando....");
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(URL);
-            System.out.println("Conectado ao banco de dados");
+//            Class.forName(DRIVER);
+//            conn = DriverManager.getConnection(URL);
 
-//            Properties connectionProps = new Properties();
-//            connectionProps.put("user", this.usuario);
-//            connectionProps.put("password", this.senha);
-//            conn = DriverManager.getConnection(
-//                    "jdbc:derby://localhost:1527/"
-//                    + this.banco
-//                    + ";create=true",
-//                    connectionProps);
-//            System.out.println("Connected to database");
+            Properties connectionProps = new Properties();
+            connectionProps.put("user", this.usuario);
+            connectionProps.put("password", this.senha);
+            conn = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/"
+                    + this.banco
+                    + ";create=true",
+                    connectionProps);
+            System.out.println("Conectado ao banco de dados");
         }
         return conn;
     }
@@ -61,7 +62,17 @@ public class Banco {
         conn.close();
     }
 
-    public void createTableCidades() throws SQLException {
+    public boolean exists() throws SQLException{
+        DatabaseMetaData metas = conn.getMetaData();
+       
+        ResultSet rs = metas.getTables(conn.getCatalog(), null, "VERSAO", null);
+        
+        if (rs.next()){
+            return true;
+        }
+        return false;
+    }
+    public String createTableCidades() throws SQLException {
 
         String sql = "create table CIDADES "
                 + "(ID integer not null GENERATED ALWAYS AS "
@@ -75,11 +86,11 @@ public class Banco {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.execute();
         stmt.close();
-        System.out.println("CreateTables.createTableCidades Ok!");
+        return "CreateTables.createTableCidades Ok!";
 
     }
 
-    public void createTableEstados() throws SQLException {
+    public String createTableEstados() throws SQLException {
 
         String sql = "create table ESTADOS "
                 + "(ID integer not null GENERATED ALWAYS AS "
@@ -91,11 +102,11 @@ public class Banco {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.execute();
         stmt.close();
-        System.out.println("CreateTables.createTableEstados Ok!");
+        return "CreateTables.createTableEstados Ok!";
 
     }
 
-    public void createTableClientes() throws SQLException {
+    public String createTableClientes() throws SQLException {
 
         String sql = "create table CLIENTES "
                 + "(ID integer not null GENERATED ALWAYS AS "
@@ -122,11 +133,11 @@ public class Banco {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.execute();
         stmt.close();
-        System.out.println("CreateTables.createTableClientes Ok!");
+        return "CreateTables.createTableClientes Ok!";
 
     }
 
-    public void createTableEnderecos() throws SQLException {
+    public String createTableEnderecos() throws SQLException {
 
         String sql = "create table ENDERECOS "
                 + "(ID integer not null GENERATED ALWAYS AS "
@@ -150,11 +161,11 @@ public class Banco {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.execute();
         stmt.close();
-        System.out.println("CreateTables.createTableEnderecos Ok!");
+        return "CreateTables.createTableEnderecos Ok!";
 
     }
 
-    public void createTablePagamentos() throws SQLException {
+    public String createTablePagamentos() throws SQLException {
 
         String sql = "create table PAGAMENTOS "
                 + "(ID integer not null GENERATED ALWAYS AS "
@@ -167,11 +178,11 @@ public class Banco {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.execute();
         stmt.close();
-        System.out.println("CreateTables.createTablePagamentos Ok!");
+        return "CreateTables.createTablePagamentos Ok!";
 
     }
 
-    public void createTableProdutos() throws SQLException {
+    public String createTableProdutos() throws SQLException {
 
         String sql = "create table PRODUTOS "
                 + "(ID integer not null GENERATED ALWAYS AS "
@@ -188,10 +199,10 @@ public class Banco {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.execute();
         stmt.close();
-        System.out.println("CreateTables.createTableProdutos Ok!");
+        return "CreateTables.createTableProdutos Ok!";
     }
 
-    public void createTableVendas() throws SQLException {
+    public String createTableVendas() throws SQLException {
 
         String sql = "create table VENDAS "
                 + "(ID integer not null GENERATED ALWAYS AS "
@@ -203,8 +214,8 @@ public class Banco {
                 + "VALOR_FINAL DECIMAL(6,2), "
                 + "CLIENTE VARCHAR(150), "
                 + "OBSERVACAO LONG VARCHAR, "
-                + "PAGO CHAR(1), "
                 + "DATA_CADASTRO TIMESTAMP, "
+                + "DATA_PAGAMENTO TIMESTAMP, "
                 + "CONSTRAINT FK_VENDAS_CLIENTES FOREIGN KEY (CLIENTE_ID) "
                 + "REFERENCES CLIENTES (ID), "
                 + "CONSTRAINT FK_VENDAS_PAGAMENTOS FOREIGN KEY (PAGAMENTO_ID) "
@@ -214,11 +225,11 @@ public class Banco {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.execute();
         stmt.close();
-        System.out.println("CreateTables.createTableVendas Ok!");
+        return "CreateTables.createTableVendas Ok!";
 
     }
 
-    public void createTableVendasHasProdutos() throws SQLException {
+    public String createTableVendasHasProdutos() throws SQLException {
 
         String sql = "create table VENDAS_HAS_PRODUTOS "
                 + "(ID integer not null GENERATED ALWAYS AS "
@@ -236,7 +247,23 @@ public class Banco {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.execute();
         stmt.close();
-        System.out.println("CreateTables.createTableVendasHasProdutos Ok!");
+        return "CreateTables.createTableVendasHasProdutos Ok!";
+
+    }
+
+    public String createTableVersao() throws SQLException {
+
+        String sql = "create table VERSAO "
+                + "(ID integer not null GENERATED ALWAYS AS "
+                + "IDENTITY (START WITH 1, INCREMENT BY 1) CONSTRAINT PK_VERSAO PRIMARY KEY, "
+                + "VERSAO VARCHAR(20), "
+                + "DATA_VERSAO TIMESTAMP "
+                + ")";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.execute();
+        stmt.close();
+        return "CreateTables.createTableVersao Ok!";
 
     }
 }

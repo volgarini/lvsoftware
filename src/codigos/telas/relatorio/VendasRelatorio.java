@@ -18,6 +18,7 @@ public class VendasRelatorio implements Serializable {
     private List<String> descricoes;
     private List<String> quantidades;
     private List<String> valores;
+    private List<String> valorProdutos;
     
     private List<VendasProduto> produtos;
     private String nome;
@@ -25,9 +26,9 @@ public class VendasRelatorio implements Serializable {
     private String desconto;
     private String valorFinal;
     private String observacao;
-    private String pago;
     private Date dataVenda;
-    
+    private String dataPagamento;
+            
     public VendasRelatorio() {
     }
 
@@ -113,14 +114,22 @@ public class VendasRelatorio implements Serializable {
         this.dataVenda = dataVenda;
     }
 
-    public String getPago() {
-        return pago;
+    public String getDataPagamento() {
+        return dataPagamento;
     }
 
-    public void setPago(String pago) {
-        this.pago = pago;
+    public void setDataPagamento(String dataPagamento) {
+        this.dataPagamento = dataPagamento;
     }
 
-    
+    public List<String> getValorProdutos() {
+        return valorProdutos;
+    }
+
+    public void setValorProdutos(List<String> valorProdutos) {
+        this.valorProdutos = valorProdutos;
+    }
+
+      
 
 }

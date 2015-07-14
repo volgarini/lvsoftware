@@ -5,11 +5,7 @@
  */
 package codigos;
 
-import codigos.bd.Banco;
-import codigos.bd.beans.Cidades;
-import codigos.bd.beans.Estados;
-import codigos.bd.models.CidadesModel;
-import codigos.bd.models.EstadosModel;
+import codigos.telas.BancoDados;
 import codigos.telas.Cliente;
 import codigos.telas.Pagamento;
 import codigos.telas.Produto;
@@ -24,7 +20,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -238,38 +233,9 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        if (JOptionPane.showInputDialog("Senha", null).compareTo("147258369") == 0) {
-            Banco banco = new Banco();
-            try {
-                EstadosModel em = new EstadosModel();
-                CidadesModel cm = new CidadesModel();
-
-                banco.getConnection();
-                banco.createTableEstados();
-                banco.createTableCidades();
-                banco.createTableClientes();
-                banco.createTableEnderecos();
-                banco.createTablePagamentos();
-                banco.createTableProdutos();
-                banco.createTableVendas();
-                banco.createTableVendasHasProdutos();
-
-                int id = em.inserir(new Estados(null, "São Paulo", "SP"));
-                cm.inserir(new Cidades(null, id, "Ribeirão Preto"));
-                cm.inserir(new Cidades(null, id, "Sertãozinho"));
-                cm.inserir(new Cidades(null, id, "Dumont"));
-                cm.inserir(new Cidades(null, id, "Altinópolis"));
-
-                id = em.inserir(new Estados(null, "Minas Gerais", "MG"));
-                cm.inserir(new Cidades(null, id, "Belo Horizonte"));
-
-                JOptionPane.showMessageDialog(null, "Banco de Dados criado com sucesso!", "Aviso", JOptionPane.INFORMATION_MESSAGE, null);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
-            }
-        }
+        BancoDados bd = new BancoDados(jDesktopPane1);
+        jDesktopPane1.add(bd);
+        bd.show();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed

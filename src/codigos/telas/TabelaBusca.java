@@ -101,15 +101,18 @@ public class TabelaBusca extends ModalityInternalFrame {
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
 
         if (clientes != null) {
+            ModalityInternalFrame.tipo = ModalityInternalFrame.TIPO_CLIENTE;
             for (Clientes cliente : clientes) {
                 model.addRow(new String[]{String.valueOf(cliente.getId()), cliente.getNome(), cliente.getNomePai(), cliente.getNomeMae()});
             }
         } else if (produtos != null) {
+            ModalityInternalFrame.tipo = ModalityInternalFrame.TIPO_PRODUTO;
             model.setColumnIdentifiers(new String[]{"Id", "Descrição", "Valor", "Quantidade"});
             for (Produtos produto : produtos) {
                 model.addRow(new String[]{String.valueOf(produto.getId()), produto.getDescricao(), "R$ " + String.valueOf(produto.getValor()), String.valueOf(produto.getQuantidade())});
             }
         }else if (pagamentos != null) {
+            ModalityInternalFrame.tipo = ModalityInternalFrame.TIPO_PAGAMENTO;
             model.setColumnIdentifiers(new String[]{"Id", "Descrição"});
             for (Pagamentos pagamento : pagamentos) {
                 model.addRow(new String[]{String.valueOf(pagamento.getId()), pagamento.getDescricao()});

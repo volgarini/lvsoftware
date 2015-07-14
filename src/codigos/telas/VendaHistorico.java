@@ -88,7 +88,7 @@ public class VendaHistorico extends ModalityInternalFrame {
 
             },
             new String [] {
-                "Data", "Observação", "Nome", "Produtos", "Valor Total", "Pago"
+                "Data", "Data Pagamento", "Observação", "Nome", "Produtos", "Valor Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -292,7 +292,8 @@ public class VendaHistorico extends ModalityInternalFrame {
                 for (VendasHasProdutos vendasProdutos : produtos) {
                     prod += vendasProdutos.getQuantidade() + " " + produtosModel.byId(vendasProdutos.getProdutoId()).getDescricao() + "; ";
                 }
-                tableModel.addRow(new String[]{new SimpleDateFormat("dd/MM/yyyy HH:mm").format(vendas.getDataCadastro()), vendas.getObservacao(), vendas.getCliente(), prod, "R$ " + String.format("%.2f", vendas.getValorFinal()), String.valueOf(vendas.getPago())});
+                String dataPagamento = vendas.getDataPagamento() == null ? "" : new SimpleDateFormat("dd/MM/yyyy HH:mm").format(vendas.getDataPagamento());
+                tableModel.addRow(new String[]{new SimpleDateFormat("dd/MM/yyyy HH:mm").format(vendas.getDataCadastro()), dataPagamento, vendas.getObservacao(), vendas.getCliente(), prod, "R$ " + String.format("%.2f", vendas.getValorFinal())});
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

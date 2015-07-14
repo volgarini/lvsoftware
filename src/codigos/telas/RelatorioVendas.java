@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDesktopPane;
@@ -208,7 +209,8 @@ public class RelatorioVendas extends Relatorio {
                         vendasRelatorio.setDataVenda(vendas.getDataCadastro());
                         vendasRelatorio.setDesconto("R$ " + String.format("%.2f", vendas.getDesconto()));
                         vendasRelatorio.setValorFinal("R$ " + String.format("%.2f", vendas.getValorFinal()));
-                        vendasRelatorio.setPago(String.valueOf(vendas.getPago()));
+                        //vendasRelatorio.setPago(String.valueOf(vendas.getPago()));
+                        vendasRelatorio.setDataPagamento(vendas.getDataPagamento() == null ? "" : new SimpleDateFormat("dd/MM/yyyy HH:mm").format(vendas.getDataPagamento()));
                         dados.add(vendasRelatorio);
                     }
                     emitirRelatorio(dados, arquivo, relatorio);
