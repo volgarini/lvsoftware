@@ -35,7 +35,7 @@ public class ProdutosModel extends Banco {
         ps.setInt(4, produto.getQuantidade());
         ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
         ps.setString(6, produto.getTipo());
-        
+
         if (ps.executeUpdate() > 0) {
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
@@ -65,7 +65,6 @@ public class ProdutosModel extends Banco {
 
     }
 
-    
     public int desativar(Produtos produto) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("UPDATE PRODUTOS SET "
                 + "DATA_EXCLUSAO = ? WHERE ID = ?");
@@ -92,6 +91,7 @@ public class ProdutosModel extends Banco {
         return -1;
 
     }
+
     public Produtos byDescricao(String descricao) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS WHERE DESCRICAO = ? AND DATA_EXCLUSAO IS NULL");
         ps.setString(1, descricao);
@@ -115,11 +115,11 @@ public class ProdutosModel extends Banco {
         }
         return new Produtos(-1);
     }
-    
+
     public ArrayList<Produtos> likeDescricao(String descricao) throws SQLException, ClassNotFoundException {
         ArrayList<Produtos> produtos = new ArrayList<>();
 
-        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS WHERE lower(DESCRICAO) LIKE lower('%" + descricao + "%') AND DATA_EXCLUSAO IS NULL");
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS WHERE (lower(DESCRICAO) LIKE lower('%" + descricao + "%') OR CODIGO_BARRAS = '" + descricao + "') AND DATA_EXCLUSAO IS NULL");
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
@@ -141,8 +141,7 @@ public class ProdutosModel extends Banco {
 
         return produtos;
     }
-    
-    
+
     public ArrayList<Produtos> byTipo(String tipo) throws SQLException, ClassNotFoundException {
         ArrayList<Produtos> produtos = new ArrayList<>();
         PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM PRODUTOS WHERE TIPO = ? AND DATA_EXCLUSAO IS NULL");

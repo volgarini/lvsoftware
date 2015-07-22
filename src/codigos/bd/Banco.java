@@ -5,6 +5,9 @@
  */
 package codigos.bd;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -19,18 +22,31 @@ import java.util.Properties;
  */
 public class Banco {
 
-    private static final String URL = "jdbc:derby:madurrodb;create=true";
+    //private static final String URL = "jdbc:derby:madurrodb;create=true";
     private static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
 
     private String usuario;
     private String senha;
     private String banco;
+    private String host;
     private static Connection conn = null;
 
     public Banco() {
-        usuario = "root";
-        senha = "root";
-        banco = "madurro";
+        FileInputStream file = null;
+        try {
+            Properties properties = new Properties();
+            file = new FileInputStream("config/banco.properties");
+            properties.load(file);
+            this.banco = properties.getProperty("banco");
+            this.usuario = properties.getProperty("usuario");
+            this.senha = properties.getProperty("senha");
+            this.host = properties.getProperty("host");
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     public Banco(String usuario, String senha, String banco) {
@@ -42,17 +58,19 @@ public class Banco {
     public Connection getConnection() throws SQLException, ClassNotFoundException {
         if (conn == null || conn.isClosed()) {
             System.out.println("Conectando....");
-//            Class.forName(DRIVER);
-//            conn = DriverManager.getConnection(URL);
+            //Conexão local EMBED DRIVER
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(this.host);
 
-            Properties connectionProps = new Properties();
-            connectionProps.put("user", this.usuario);
-            connectionProps.put("password", this.senha);
-            conn = DriverManager.getConnection(
-                    "jdbc:derby://localhost:1527/"
-                    + this.banco
-                    + ";create=true",
-                    connectionProps);
+            //Conexão remota
+//            Properties connectionProps = new Properties();
+//            connectionProps.put("user", this.usuario);
+//            connectionProps.put("password", this.senha);
+//            conn = DriverManager.getConnection(
+//                    this.host
+//                    + this.banco
+//                    + ";create=true",
+//                    connectionProps);
             System.out.println("Conectado ao banco de dados");
         }
         return conn;
@@ -62,16 +80,17 @@ public class Banco {
         conn.close();
     }
 
-    public boolean exists() throws SQLException{
+    public boolean exists() throws SQLException {
         DatabaseMetaData metas = conn.getMetaData();
-       
+
         ResultSet rs = metas.getTables(conn.getCatalog(), null, "VERSAO", null);
-        
-        if (rs.next()){
+
+        if (rs.next()) {
             return true;
         }
         return false;
     }
+
     public String createTableCidades() throws SQLException {
 
         String sql = "create table CIDADES "

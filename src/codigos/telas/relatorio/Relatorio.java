@@ -29,6 +29,10 @@ public class Relatorio extends ModalityInternalFrame {
         super(main, titulo, false, true);
     }
 
+    public Relatorio(JDesktopPane main, String titulo, boolean resizable, boolean closable, boolean maximizable, boolean iconable) {
+
+        super(main, titulo, resizable, closable, maximizable, iconable);
+    }
     protected void emitirRelatorio(List dados, String arquivo, String relatorio) {
         try {
             Map<String, Object> params = new HashMap<String, Object>();
